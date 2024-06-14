@@ -1,0 +1,25 @@
+# profile all builds all services, profile processing builds all services except Nifi, ingestion buils only HDFS and Nifi services
+services:  
+  nifi:
+    container_name: nifi
+    build: ./Dockerfiles/nifi
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=admin
+      - SINGLE_USER_CREDENTIALS_PASSWORD=123456789101112
+      - NIFI_JVM_HEAP_MAX=2g
+    volumes:
+      - nifi-data:/opt/nifi/nifi-current/Data
+    ports:
+      - 8443:8443
+      - 5200:5200
+    networks:
+      - elt_cluster
+    profiles: [ingestion, all]
+      
+  volumes:
+  nifi-data:
+
+networks:
+  elt_cluster:
+    driver: bridge
+  

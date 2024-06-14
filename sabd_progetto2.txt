@@ -1,0 +1,35 @@
+-Consegna, 9 luglio
+-Presentazione 11 luglio
+
+-Stesso dataset + campo s194_temperature_celsius
+-Nel campo della temperatura alcune tuple non ci sono i valori 
+-Metriche di performance latenza (tra quando entra nel sistema ed esce) e througput del sistema
+
+-Query1-> 
+Per i vault_id tra 1000 e 1020 calcolare il numero di eventi presenti (count tuple), media e deviazione standard (algoritmo online, tipo Welford) della temperatura misurata sui suoi hard disk.
+La query va fatta su finestre
+-Durata 1 giorno (event time, campo date del dataset??)
+-Durata 3 giorni (event time, campo date del dataset??)
+-Intero dataset (global)
+
+Nell'output va messo il timestamp del primo evento entrato nella finestra
+
+-Query2->
+Calcolare la classifica in tempo reale (alla scadenza di ogni finestra la classifica si aggiorna) dei 10 vault che subiscono il maggior numero di fallimenti nella stessa giornata. Riportare #fallimenti, modello e seriale hard disk guasti
+
+La query va fatta su finestre
+-Durata 1 giorno (event time, campo date del dataset??)
+-Durata 3 giorni (event time, campo date del dataset??)
+-Intero dataset (global)
+
+-Query3->
+Calcolare minimo, 25,50,75 percentile e massimo delle ore di funzionamento per gli hard disk appartenenti a vault_id tra 1090 e 1120 (compresi), farlo con stimatore senza ordinare ed accumulare le tuple (e.g algoritmo p square kant etc)
+
+La query va fatta su finestre
+-Durata 30 minuti (event time, campo date del dataset??)
+-Durata 1 ora  (event time, campo date del dataset??)
+-Durata 1 giorno
+
+-Risultati vanno scritti in CSV
+
+-Opzionale Spark Streaming/Kafka Streams per le query
