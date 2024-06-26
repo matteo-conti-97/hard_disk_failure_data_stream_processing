@@ -16,7 +16,7 @@ services:
       - elt_cluster
     profiles: [ingestion, all]
       
-  volumes:
+volumes:
   nifi-data:
 
 networks:
