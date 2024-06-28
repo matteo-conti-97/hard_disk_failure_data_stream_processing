@@ -1,4 +1,8 @@
 import requests
+import csv
+
+url = 'http://localhost:5200/listener'
+file_path = './data/dataset/raw_data_medium-utv_sorted.csv'
 
 def upload_file(url, file_path):
     # Open the file in binary mode and send it in the POST request
@@ -9,10 +13,13 @@ def upload_file(url, file_path):
     print(f'Status Code: {response.status_code}')
     print(f'Response Text: {response.text}')
 
-if __name__ == "__main__":
-    url = 'http://localhost:5200/listener'
-    
-    file_path = './data/dataset/raw_data_medium-utv_sorted.csv'
+def read_file_and_send_data(file_path):
+    with open(file_path, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            #row['date']
+            print(row[0])
 
-    # Call the upload_file function
-    upload_file(url, file_path)
+
+if __name__ == "__main__":
+    read_file_and_send_data(file_path)
