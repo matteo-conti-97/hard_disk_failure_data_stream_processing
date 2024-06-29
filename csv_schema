@@ -111,3 +111,18 @@ s9_power_on_hours
   ]
 }
 
+
+{
+  "type": "record",
+  "name": "diskDataFiltered",
+  "namespace": "nifi",
+  "fields": [
+    {"name": "date", "type": {"type": "string", "logicalType": "timestamp-millis", "format": "yyyy-MM-dd'T'HH:mm:ss.SSS"}},
+    {"name": "serial_number", "type": "string"},
+    {"name": "model", "type": "string"},
+    {"name": "failure", "type": "int"},
+    {"name": "vault_id", "type": "int"},
+    {"name": "s9_power_on_hours", "type": "float"},
+    {"name": "s194_temperature_celsius",  "type": "int"}
+  ]
+}
