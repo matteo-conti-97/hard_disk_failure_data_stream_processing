@@ -2,7 +2,7 @@
 services: 
   #NIFI 
   nifi:
-    image: apache/nifi:latest
+    build: ./nifi
     container_name: nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin

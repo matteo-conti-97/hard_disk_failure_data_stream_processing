@@ -2,42 +2,19 @@
 <template encoding-version="1.3">
     <description></description>
     <groupId>5f293918-0190-1000-8963-81e4dce7d08a</groupId>
-    <name>kafka2</name>
+    <name>kafka</name>
     <snippet>
         <connections>
-            <id>19ccf9b0-34ba-36ba-0000-000000000000</id>
+            <id>43b1d97a-dd9f-3c63-0000-000000000000</id>
             <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
+            <versionedComponentId>43b1d97a-dd9f-3c63-896a-dc81e1c66fc2</versionedComponentId>
             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
             <destination>
                 <groupId>7b71dd55-11a4-31d2-0000-000000000000</groupId>
-                <id>a2f07d0b-32d7-3b6e-0000-000000000000</id>
+                <id>8d60368c-58c2-33e8-0000-000000000000</id>
                 <type>PROCESSOR</type>
-            </destination>
-            <flowFileExpiration>0 sec</flowFileExpiration>
-            <labelIndex>1</labelIndex>
-            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-            <name></name>
-            <selectedRelationships>Query</selectedRelationships>
-            <source>
-                <groupId>7b71dd55-11a4-31d2-0000-000000000000</groupId>
-                <id>4d01b82f-fc5e-3485-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </source>
-            <zIndex>0</zIndex>
-        </connections>
-        <connections>
-            <id>3bd4b2a6-9ed0-37d9-0000-000000000000</id>
-            <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
-            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-            <destination>
-                <groupId>7b71dd55-11a4-31d2-0000-000000000000</groupId>
-                <id>4d01b82f-fc5e-3485-0000-000000000000</id>
-                <type>PROCESSOR</type>
+                <versionedComponentId>8d60368c-58c2-33e8-845a-5081c28576b7</versionedComponentId>
             </destination>
             <flowFileExpiration>0 sec</flowFileExpiration>
             <labelIndex>1</labelIndex>
@@ -49,14 +26,44 @@
             <selectedRelationships>success</selectedRelationships>
             <source>
                 <groupId>7b71dd55-11a4-31d2-0000-000000000000</groupId>
-                <id>a193da94-735f-35e1-0000-000000000000</id>
+                <id>4e643858-c597-3c9c-0000-000000000000</id>
                 <type>PROCESSOR</type>
+                <versionedComponentId>4e643858-c597-3c9c-8d9c-fef32d26a2bb</versionedComponentId>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>7cdbed1c-c743-3ebe-0000-000000000000</id>
+            <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
+            <versionedComponentId>7cdbed1c-c743-3ebe-8731-3aecf4577e6c</versionedComponentId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>7b71dd55-11a4-31d2-0000-000000000000</groupId>
+                <id>2bef9a87-0c48-3a8c-0000-000000000000</id>
+                <type>PROCESSOR</type>
+                <versionedComponentId>2bef9a87-0c48-3a8c-86ce-a2eaf14fbba5</versionedComponentId>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>Query</selectedRelationships>
+            <source>
+                <groupId>7b71dd55-11a4-31d2-0000-000000000000</groupId>
+                <id>8d60368c-58c2-33e8-0000-000000000000</id>
+                <type>PROCESSOR</type>
+                <versionedComponentId>8d60368c-58c2-33e8-845a-5081c28576b7</versionedComponentId>
             </source>
             <zIndex>0</zIndex>
         </connections>
         <controllerServices>
-            <id>53fb999c-066c-34fb-0000-000000000000</id>
+            <id>500fe55c-9cce-3c46-0000-000000000000</id>
             <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
+            <versionedComponentId>500fe55c-9cce-3c46-a540-3c8c838db982</versionedComponentId>
             <bulletinLevel>WARN</bulletinLevel>
             <bundle>
                 <artifact>nifi-registry-nar</artifact>
@@ -141,59 +148,9 @@
             <type>org.apache.nifi.schemaregistry.services.AvroSchemaRegistry</type>
         </controllerServices>
         <controllerServices>
-            <id>5d76d62d-a706-30d7-0000-000000000000</id>
+            <id>5f821998-064d-3a37-0000-000000000000</id>
             <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
-            <bulletinLevel>WARN</bulletinLevel>
-            <bundle>
-                <artifact>nifi-registry-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.26.0</version>
-            </bundle>
-            <comments></comments>
-            <descriptors>
-                <entry>
-                    <key>avro-reg-validated-field-names</key>
-                    <value>
-                        <name>avro-reg-validated-field-names</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>diskDataFilteredType</key>
-                    <value>
-                        <name>diskDataFilteredType</name>
-                    </value>
-                </entry>
-            </descriptors>
-            <name>AvroSchemaRegistryFilteredType</name>
-            <persistsState>false</persistsState>
-            <properties>
-                <entry>
-                    <key>avro-reg-validated-field-names</key>
-                    <value>true</value>
-                </entry>
-                <entry>
-                    <key>diskDataFilteredType</key>
-                    <value>{
-  "type": "record",
-  "name": "diskDataFiltered",
-  "namespace": "nifi",
-  "fields": [
-    {"name": "date", "type": {"type": "string", "logicalType": "timestamp-millis", "format": "yyyy-MM-dd'T'HH:mm:ss.SSS"}},
-    {"name": "serial_number", "type": "string"},
-    {"name": "model", "type": "string"},
-    {"name": "failure", "type": "int"},
-    {"name": "vault_id", "type": "int"},
-    {"name": "s9_power_on_hours", "type": "float"}
-  ]
-}</value>
-                </entry>
-            </properties>
-            <state>ENABLED</state>
-            <type>org.apache.nifi.schemaregistry.services.AvroSchemaRegistry</type>
-        </controllerServices>
-        <controllerServices>
-            <id>6b44ef11-fce6-367c-0000-000000000000</id>
-            <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
+            <versionedComponentId>5f821998-064d-3a37-94ca-f040dd0c8ca2</versionedComponentId>
             <bulletinLevel>WARN</bulletinLevel>
             <bundle>
                 <artifact>nifi-record-serialization-services-nar</artifact>
@@ -433,7 +390,7 @@
                 </entry>
                 <entry>
                     <key>schema-registry</key>
-                    <value>5d76d62d-a706-30d7-0000-000000000000</value>
+                    <value>edb7212e-22a3-39df-0000-000000000000</value>
                 </entry>
                 <entry>
                     <key>schema-name</key>
@@ -468,7 +425,7 @@
                 </entry>
                 <entry>
                     <key>Include Header Line</key>
-                    <value>true</value>
+                    <value>false</value>
                 </entry>
                 <entry>
                     <key>Quote Character</key>
@@ -509,8 +466,9 @@
             <type>org.apache.nifi.csv.CSVRecordSetWriter</type>
         </controllerServices>
         <controllerServices>
-            <id>9f14af86-39da-3e7a-0000-000000000000</id>
+            <id>a53848a2-0872-3deb-0000-000000000000</id>
             <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
+            <versionedComponentId>a53848a2-0872-3deb-ae3b-fce0ea434c40</versionedComponentId>
             <bulletinLevel>WARN</bulletinLevel>
             <bundle>
                 <artifact>nifi-record-serialization-services-nar</artifact>
@@ -727,7 +685,7 @@
                 </entry>
                 <entry>
                     <key>schema-registry</key>
-                    <value>53fb999c-066c-34fb-0000-000000000000</value>
+                    <value>500fe55c-9cce-3c46-0000-000000000000</value>
                 </entry>
                 <entry>
                     <key>schema-name</key>
@@ -810,355 +768,67 @@
             <state>ENABLED</state>
             <type>org.apache.nifi.csv.CSVReader</type>
         </controllerServices>
-        <processors>
-            <id>4d01b82f-fc5e-3485-0000-000000000000</id>
+        <controllerServices>
+            <id>edb7212e-22a3-39df-0000-000000000000</id>
             <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
-            <position>
-                <x>0.0</x>
-                <y>240.0</y>
-            </position>
+            <versionedComponentId>edb7212e-22a3-39df-b07b-97dbd1242b54</versionedComponentId>
+            <bulletinLevel>WARN</bulletinLevel>
             <bundle>
-                <artifact>nifi-standard-nar</artifact>
+                <artifact>nifi-registry-nar</artifact>
                 <group>org.apache.nifi</group>
                 <version>1.26.0</version>
             </bundle>
-            <config>
-                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
-                <bulletinLevel>WARN</bulletinLevel>
-                <comments></comments>
-                <concurrentlySchedulableTaskCount>4</concurrentlySchedulableTaskCount>
-                <descriptors>
-                    <entry>
-                        <key>record-reader</key>
-                        <value>
-                            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
-                            <name>record-reader</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>record-writer</key>
-                        <value>
-                            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
-                            <name>record-writer</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>include-zero-record-flowfiles</key>
-                        <value>
-                            <name>include-zero-record-flowfiles</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>cache-schema</key>
-                        <value>
-                            <name>cache-schema</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>dbf-default-precision</key>
-                        <value>
-                            <name>dbf-default-precision</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>dbf-default-scale</key>
-                        <value>
-                            <name>dbf-default-scale</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Query</key>
-                        <value>
-                            <name>Query</name>
-                        </value>
-                    </entry>
-                </descriptors>
-                <executionNode>ALL</executionNode>
-                <lossTolerant>false</lossTolerant>
-                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
-                <penaltyDuration>30 sec</penaltyDuration>
-                <properties>
-                    <entry>
-                        <key>record-reader</key>
-                        <value>9f14af86-39da-3e7a-0000-000000000000</value>
-                    </entry>
-                    <entry>
-                        <key>record-writer</key>
-                        <value>6b44ef11-fce6-367c-0000-000000000000</value>
-                    </entry>
-                    <entry>
-                        <key>include-zero-record-flowfiles</key>
-                        <value>true</value>
-                    </entry>
-                    <entry>
-                        <key>cache-schema</key>
-                        <value>true</value>
-                    </entry>
-                    <entry>
-                        <key>dbf-default-precision</key>
-                        <value>10</value>
-                    </entry>
-                    <entry>
-                        <key>dbf-default-scale</key>
-                        <value>0</value>
-                    </entry>
-                    <entry>
-                        <key>Query</key>
-                        <value>SELECT "date" , serial_number, model, failure, vault_id, s9_power_on_hours FROM FLOWFILE WHERE vault_id &lt;&gt; 'vault_id' AND s9_power_on_hours IS NOT NULL AND s9_power_on_hours &lt;&gt; ''</value>
-                    </entry>
-                </properties>
-                <retryCount>10</retryCount>
-                <runDurationMillis>0</runDurationMillis>
-                <schedulingPeriod>0 sec</schedulingPeriod>
-                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                <yieldDuration>1 sec</yieldDuration>
-            </config>
-            <executionNodeRestricted>false</executionNodeRestricted>
-            <name>CSV_Branch_QueryRecord</name>
-            <relationships>
-                <autoTerminate>true</autoTerminate>
-                <name>failure</name>
-                <retry>false</retry>
-            </relationships>
-            <relationships>
-                <autoTerminate>true</autoTerminate>
-                <name>original</name>
-                <retry>false</retry>
-            </relationships>
-            <relationships>
-                <autoTerminate>false</autoTerminate>
-                <name>Query</name>
-                <retry>false</retry>
-            </relationships>
-            <state>RUNNING</state>
-            <style/>
-            <type>org.apache.nifi.processors.standard.QueryRecord</type>
-        </processors>
+            <comments></comments>
+            <descriptors>
+                <entry>
+                    <key>avro-reg-validated-field-names</key>
+                    <value>
+                        <name>avro-reg-validated-field-names</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>diskDataFilteredType</key>
+                    <value>
+                        <name>diskDataFilteredType</name>
+                    </value>
+                </entry>
+            </descriptors>
+            <name>AvroSchemaRegistryFilteredType</name>
+            <persistsState>false</persistsState>
+            <properties>
+                <entry>
+                    <key>avro-reg-validated-field-names</key>
+                    <value>true</value>
+                </entry>
+                <entry>
+                    <key>diskDataFilteredType</key>
+                    <value>{
+  "type": "record",
+  "name": "diskDataFiltered",
+  "namespace": "nifi",
+  "fields": [
+    {"name": "date", "type": {"type": "string", "logicalType": "timestamp-millis", "format": "yyyy-MM-dd'T'HH:mm:ss.SSS"}},
+    {"name": "serial_number", "type": "string"},
+    {"name": "model", "type": "string"},
+    {"name": "failure", "type": "int"},
+    {"name": "vault_id", "type": "int"},
+    {"name": "s9_power_on_hours", "type": "float"},
+    {"name": "s194_temperature_celsius",  "type": "int"}
+  ]
+}</value>
+                </entry>
+            </properties>
+            <state>ENABLED</state>
+            <type>org.apache.nifi.schemaregistry.services.AvroSchemaRegistry</type>
+        </controllerServices>
         <processors>
-            <id>a193da94-735f-35e1-0000-000000000000</id>
-            <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
-            <position>
-                <x>8.0</x>
-                <y>0.0</y>
-            </position>
-            <bundle>
-                <artifact>nifi-standard-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.26.0</version>
-            </bundle>
-            <config>
-                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
-                <bulletinLevel>WARN</bulletinLevel>
-                <comments></comments>
-                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                <descriptors>
-                    <entry>
-                        <key>Base Path</key>
-                        <value>
-                            <name>Base Path</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Listening Port</key>
-                        <value>
-                            <name>Listening Port</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>health-check-port</key>
-                        <value>
-                            <name>health-check-port</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Max Data to Receive per Second</key>
-                        <value>
-                            <name>Max Data to Receive per Second</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>SSL Context Service</key>
-                        <value>
-                            <identifiesControllerService>org.apache.nifi.ssl.RestrictedSSLContextService</identifiesControllerService>
-                            <name>SSL Context Service</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>HTTP Protocols</key>
-                        <value>
-                            <dependencies>
-<propertyName>SSL Context Service</propertyName>
-                            </dependencies>
-                            <name>HTTP Protocols</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>client-authentication</key>
-                        <value>
-                            <dependencies>
-<propertyName>SSL Context Service</propertyName>
-                            </dependencies>
-                            <name>client-authentication</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Authorized DN Pattern</key>
-                        <value>
-                            <name>Authorized DN Pattern</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>authorized-issuer-dn-pattern</key>
-                        <value>
-                            <name>authorized-issuer-dn-pattern</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Max Unconfirmed Flowfile Time</key>
-                        <value>
-                            <name>Max Unconfirmed Flowfile Time</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>HTTP Headers to receive as Attributes (Regex)</key>
-                        <value>
-                            <name>HTTP Headers to receive as Attributes (Regex)</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Return Code</key>
-                        <value>
-                            <name>Return Code</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>multipart-request-max-size</key>
-                        <value>
-                            <name>multipart-request-max-size</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>multipart-read-buffer-size</key>
-                        <value>
-                            <name>multipart-read-buffer-size</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>max-thread-pool-size</key>
-                        <value>
-                            <name>max-thread-pool-size</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>record-reader</key>
-                        <value>
-                            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
-                            <name>record-reader</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>record-writer</key>
-                        <value>
-                            <dependencies>
-<propertyName>record-reader</propertyName>
-                            </dependencies>
-                            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
-                            <name>record-writer</name>
-                        </value>
-                    </entry>
-                </descriptors>
-                <executionNode>ALL</executionNode>
-                <lossTolerant>false</lossTolerant>
-                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
-                <penaltyDuration>30 sec</penaltyDuration>
-                <properties>
-                    <entry>
-                        <key>Base Path</key>
-                        <value>listener</value>
-                    </entry>
-                    <entry>
-                        <key>Listening Port</key>
-                        <value>5200</value>
-                    </entry>
-                    <entry>
-                        <key>health-check-port</key>
-                    </entry>
-                    <entry>
-                        <key>Max Data to Receive per Second</key>
-                    </entry>
-                    <entry>
-                        <key>SSL Context Service</key>
-                    </entry>
-                    <entry>
-                        <key>HTTP Protocols</key>
-                        <value>HTTP_1_1</value>
-                    </entry>
-                    <entry>
-                        <key>client-authentication</key>
-                        <value>AUTO</value>
-                    </entry>
-                    <entry>
-                        <key>Authorized DN Pattern</key>
-                        <value>.*</value>
-                    </entry>
-                    <entry>
-                        <key>authorized-issuer-dn-pattern</key>
-                        <value>.*</value>
-                    </entry>
-                    <entry>
-                        <key>Max Unconfirmed Flowfile Time</key>
-                        <value>60 secs</value>
-                    </entry>
-                    <entry>
-                        <key>HTTP Headers to receive as Attributes (Regex)</key>
-                    </entry>
-                    <entry>
-                        <key>Return Code</key>
-                        <value>200</value>
-                    </entry>
-                    <entry>
-                        <key>multipart-request-max-size</key>
-                        <value>1 GB</value>
-                    </entry>
-                    <entry>
-                        <key>multipart-read-buffer-size</key>
-                        <value>512 KB</value>
-                    </entry>
-                    <entry>
-                        <key>max-thread-pool-size</key>
-                        <value>200</value>
-                    </entry>
-                    <entry>
-                        <key>record-reader</key>
-                    </entry>
-                    <entry>
-                        <key>record-writer</key>
-                    </entry>
-                </properties>
-                <retryCount>10</retryCount>
-                <runDurationMillis>0</runDurationMillis>
-                <schedulingPeriod>0 sec</schedulingPeriod>
-                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                <yieldDuration>1 sec</yieldDuration>
-            </config>
-            <executionNodeRestricted>false</executionNodeRestricted>
-            <name>ListenHTTP</name>
-            <relationships>
-                <autoTerminate>false</autoTerminate>
-                <name>success</name>
-                <retry>false</retry>
-            </relationships>
-            <state>RUNNING</state>
-            <style/>
-            <type>org.apache.nifi.processors.standard.ListenHTTP</type>
-        </processors>
-        <processors>
-            <id>a2f07d0b-32d7-3b6e-0000-000000000000</id>
+            <id>2bef9a87-0c48-3a8c-0000-000000000000</id>
             <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
             <position>
                 <x>0.0</x>
                 <y>472.0</y>
             </position>
+            <versionedComponentId>2bef9a87-0c48-3a8c-86ce-a2eaf14fbba5</versionedComponentId>
             <bundle>
                 <artifact>nifi-kafka-2-6-nar</artifact>
                 <group>org.apache.nifi</group>
@@ -1395,6 +1065,8 @@
                     </entry>
                     <entry>
                         <key>message-demarcator</key>
+                        <value>
+</value>
                     </entry>
                     <entry>
                         <key>Failure Strategy</key>
@@ -1459,7 +1131,7 @@
                     </entry>
                     <entry>
                         <key>max.request.size</key>
-                        <value>1 MB</value>
+                        <value>100 MB</value>
                     </entry>
                     <entry>
                         <key>ack.wait.time</key>
@@ -1508,6 +1180,350 @@
             </style>
             <type>org.apache.nifi.processors.kafka.pubsub.PublishKafka_2_6</type>
         </processors>
+        <processors>
+            <id>4e643858-c597-3c9c-0000-000000000000</id>
+            <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
+            <position>
+                <x>8.0</x>
+                <y>0.0</y>
+            </position>
+            <versionedComponentId>4e643858-c597-3c9c-8d9c-fef32d26a2bb</versionedComponentId>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.26.0</version>
+            </bundle>
+            <config>
+                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Base Path</key>
+                        <value>
+                            <name>Base Path</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Listening Port</key>
+                        <value>
+                            <name>Listening Port</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>health-check-port</key>
+                        <value>
+                            <name>health-check-port</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Max Data to Receive per Second</key>
+                        <value>
+                            <name>Max Data to Receive per Second</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>SSL Context Service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.ssl.RestrictedSSLContextService</identifiesControllerService>
+                            <name>SSL Context Service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>HTTP Protocols</key>
+                        <value>
+                            <dependencies>
+<propertyName>SSL Context Service</propertyName>
+                            </dependencies>
+                            <name>HTTP Protocols</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>client-authentication</key>
+                        <value>
+                            <dependencies>
+<propertyName>SSL Context Service</propertyName>
+                            </dependencies>
+                            <name>client-authentication</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Authorized DN Pattern</key>
+                        <value>
+                            <name>Authorized DN Pattern</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>authorized-issuer-dn-pattern</key>
+                        <value>
+                            <name>authorized-issuer-dn-pattern</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Max Unconfirmed Flowfile Time</key>
+                        <value>
+                            <name>Max Unconfirmed Flowfile Time</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>HTTP Headers to receive as Attributes (Regex)</key>
+                        <value>
+                            <name>HTTP Headers to receive as Attributes (Regex)</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Return Code</key>
+                        <value>
+                            <name>Return Code</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>multipart-request-max-size</key>
+                        <value>
+                            <name>multipart-request-max-size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>multipart-read-buffer-size</key>
+                        <value>
+                            <name>multipart-read-buffer-size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>max-thread-pool-size</key>
+                        <value>
+                            <name>max-thread-pool-size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>record-reader</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+                            <name>record-reader</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>record-writer</key>
+                        <value>
+                            <dependencies>
+<propertyName>record-reader</propertyName>
+                            </dependencies>
+                            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+                            <name>record-writer</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Base Path</key>
+                        <value>listener</value>
+                    </entry>
+                    <entry>
+                        <key>Listening Port</key>
+                        <value>5200</value>
+                    </entry>
+                    <entry>
+                        <key>health-check-port</key>
+                    </entry>
+                    <entry>
+                        <key>Max Data to Receive per Second</key>
+                    </entry>
+                    <entry>
+                        <key>SSL Context Service</key>
+                    </entry>
+                    <entry>
+                        <key>HTTP Protocols</key>
+                        <value>HTTP_1_1</value>
+                    </entry>
+                    <entry>
+                        <key>client-authentication</key>
+                        <value>AUTO</value>
+                    </entry>
+                    <entry>
+                        <key>Authorized DN Pattern</key>
+                        <value>.*</value>
+                    </entry>
+                    <entry>
+                        <key>authorized-issuer-dn-pattern</key>
+                        <value>.*</value>
+                    </entry>
+                    <entry>
+                        <key>Max Unconfirmed Flowfile Time</key>
+                        <value>2000 secs</value>
+                    </entry>
+                    <entry>
+                        <key>HTTP Headers to receive as Attributes (Regex)</key>
+                    </entry>
+                    <entry>
+                        <key>Return Code</key>
+                        <value>200</value>
+                    </entry>
+                    <entry>
+                        <key>multipart-request-max-size</key>
+                        <value>1 GB</value>
+                    </entry>
+                    <entry>
+                        <key>multipart-read-buffer-size</key>
+                        <value>512 MB</value>
+                    </entry>
+                    <entry>
+                        <key>max-thread-pool-size</key>
+                        <value>200</value>
+                    </entry>
+                    <entry>
+                        <key>record-reader</key>
+                    </entry>
+                    <entry>
+                        <key>record-writer</key>
+                    </entry>
+                </properties>
+                <retryCount>10</retryCount>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>ListenHTTP</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+                <retry>false</retry>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.ListenHTTP</type>
+        </processors>
+        <processors>
+            <id>8d60368c-58c2-33e8-0000-000000000000</id>
+            <parentGroupId>7b71dd55-11a4-31d2-0000-000000000000</parentGroupId>
+            <position>
+                <x>0.0</x>
+                <y>240.0</y>
+            </position>
+            <versionedComponentId>8d60368c-58c2-33e8-845a-5081c28576b7</versionedComponentId>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.26.0</version>
+            </bundle>
+            <config>
+                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>4</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>record-reader</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+                            <name>record-reader</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>record-writer</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+                            <name>record-writer</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>include-zero-record-flowfiles</key>
+                        <value>
+                            <name>include-zero-record-flowfiles</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>cache-schema</key>
+                        <value>
+                            <name>cache-schema</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>dbf-default-precision</key>
+                        <value>
+                            <name>dbf-default-precision</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>dbf-default-scale</key>
+                        <value>
+                            <name>dbf-default-scale</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Query</key>
+                        <value>
+                            <name>Query</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>record-reader</key>
+                        <value>a53848a2-0872-3deb-0000-000000000000</value>
+                    </entry>
+                    <entry>
+                        <key>record-writer</key>
+                        <value>5f821998-064d-3a37-0000-000000000000</value>
+                    </entry>
+                    <entry>
+                        <key>include-zero-record-flowfiles</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>cache-schema</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>dbf-default-precision</key>
+                        <value>10</value>
+                    </entry>
+                    <entry>
+                        <key>dbf-default-scale</key>
+                        <value>0</value>
+                    </entry>
+                    <entry>
+                        <key>Query</key>
+                        <value>SELECT "date" , serial_number, model, failure, vault_id, s9_power_on_hours, s194_temperature_celsius FROM FLOWFILE WHERE vault_id &lt;&gt; 'vault_id' AND s9_power_on_hours IS NOT NULL AND s9_power_on_hours &lt;&gt; ''</value>
+                    </entry>
+                </properties>
+                <retryCount>10</retryCount>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>CSV_Branch_QueryRecord</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+                <retry>false</retry>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>original</name>
+                <retry>false</retry>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>Query</name>
+                <retry>false</retry>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.QueryRecord</type>
+        </processors>
     </snippet>
-    <timestamp>06/28/2024 17:31:06 UTC</timestamp>
+    <timestamp>07/01/2024 14:21:51 UTC</timestamp>
 </template>
