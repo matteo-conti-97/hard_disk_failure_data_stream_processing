@@ -1,3 +1,3 @@
 FROM apache/nifi:latest
-WORKDIR .
-COPY ./conf/nifi.properties /opt/nifi/nifi-current/conf/nifi.properties
+USER root
+RUN sed -i 's/nifi.content.repository.archive.enabled=true/nifi.content.repository.archive.enabled=false/' /opt/nifi/nifi-current/conf/nifi.properties
