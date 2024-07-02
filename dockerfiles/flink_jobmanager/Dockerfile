@@ -12,6 +12,8 @@ RUN python3 -m pip install kafka-python
 
 RUN wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka/1.17.1/flink-sql-connector-kafka-1.17.1.jar
 
+RUN wget -P /opt/flink/lib/ https://repo1.maven.org/maven2/org/apache/flink/flink-shaded-guava/30.1.1-jre-15.0/flink-shaded-guava-30.1.1-jre-15.0.jar
+
 RUN python3 -m pip install jproperties
 
 RUN python3 -m pip install psquare

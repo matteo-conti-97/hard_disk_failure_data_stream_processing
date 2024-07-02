@@ -5,7 +5,7 @@ from pyflink.common.watermark_strategy import WatermarkStrategy
 from pyflink.common.serialization import SimpleStringSchema
 from pyflink.datastream import StreamExecutionEnvironment
 
-def query1():
+def query2():
         env = StreamExecutionEnvironment.get_execution_environment()
         #env.set_parallelism(1)
         
@@ -35,4 +35,4 @@ def query1():
         
 
 if __name__ == '__main__':
-        query1()
+        query2()
