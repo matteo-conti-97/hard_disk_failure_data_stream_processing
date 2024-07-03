@@ -21,3 +21,5 @@ RUN python3 -m pip install psquare
 RUN python3 -m pip install tdigest
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
+
+RUN echo "metrics:\n  latency:\n    interval: 500" >> /opt/flink/conf/config.yaml

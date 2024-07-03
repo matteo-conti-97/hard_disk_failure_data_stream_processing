@@ -2,7 +2,7 @@
 services: 
   #NIFI 
   nifi:
-    build: ./nifi
+    build: ./dockerfiles/nifi
     container_name: nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
@@ -61,6 +61,7 @@ services:
     command: [ "/bin/bash", "-c", "chmod +x /create_topic.sh && /create_topic.sh"]
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - INGESTION_TOPI_NAME=ingestion
       - FLINK_TOPIC_NAME=flink
       - QUERY1_TOPIC_NAME=query1_out
       - QUERY2_TOPIC_NAME=query2_out
