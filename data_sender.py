@@ -7,8 +7,8 @@ import socket
 
 conf = {'bootstrap.servers': 'localhost:9093,localhost:9093',
         'client.id': socket.gethostname()}
-
 formato = "%Y-%m-%dT%H:%M:%S.%f"
+file_path = './data/dataset/raw_data_medium-utv_sorted.csv'
 
 costant_speeding_factor = 3600
 
