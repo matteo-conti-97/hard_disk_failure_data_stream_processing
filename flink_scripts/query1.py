@@ -4,10 +4,15 @@ from pyflink.datastream.connectors.kafka import KafkaSource, KafkaSink, KafkaOff
 from pyflink.common.watermark_strategy import WatermarkStrategy
 from pyflink.common.serialization import SimpleStringSchema
 from pyflink.datastream import StreamExecutionEnvironment
+from pyflink.datastream import StreamExecutionEnvironment, RuntimeExecutionMode, TimeCharacteristic
+import sys
 
-def query1():
+def query1(win_type):
         env = StreamExecutionEnvironment.get_execution_environment()
-        #env.set_parallelism(1)
+        env.set_runtime_mode(RuntimeExecutionMode.STREAMING)
+        env.set_parallelism(1)
+        env.set_stream_time_characteristic(TimeCharacteristic.EventTime)
+        env.get_config().set_latency_tracking_interval(5000)
         
         #Setup kafka source
         source = KafkaSource.builder()\
@@ -35,4 +40,18 @@ def query1():
         
 
 if __name__ == '__main__':
-        query1()
+        if len(sys.argv) < 5:
+                print("Error in make command -> usage make run_query1 win_type=<win_type{1,2,3}={1day,3day,global}>")
+                exit()
+        win_type=sys.argv[1]
+        if win_type==str(1):     
+                print("Window size: One day")
+        elif win_type==str(2):
+                print("Window size: Three days")
+        elif win_type==str(3):
+                print("Window size: Global")
+        else:
+                print("Invalid window size exiting...")
+                exit()
+                
+        query1(win_type)
