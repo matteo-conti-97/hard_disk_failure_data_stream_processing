@@ -6,7 +6,25 @@ from pyflink.common.serialization import SimpleStringSchema
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream import StreamExecutionEnvironment, RuntimeExecutionMode, TimeCharacteristic
 import sys
+from pyflink.datastream.functions import MapFunction
 
+class ParseCSVFunction(MapFunction):
+
+    def map(self, line):
+        # Split the CSV line into fields (adjust according to your CSV format)
+        fields = line.split(",")
+
+        # Assuming a simple CSV with two fields
+        if len(fields) == 9:
+            return (fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6], fields[7], fields[8])
+        else:
+            # Handle if your CSV has different number of fields
+            return ("Invalid", "CSV line")
+class PrintFunction(MapFunction):
+    def map(self, value):
+        print(f"Record received: {value}")
+        return value
+    
 def query1(win_type):
         env = StreamExecutionEnvironment.get_execution_environment()
         env.set_runtime_mode(RuntimeExecutionMode.STREAMING)
@@ -23,7 +41,7 @@ def query1(win_type):
                 .set_value_only_deserializer(SimpleStringSchema())\
                 .build()
                 
-        src = env.from_source(source, WatermarkStrategy.no_watermarks(), "Kafka Source")
+        
 
         #Setup Kafka sink
         sink = KafkaSink.builder()\
@@ -33,8 +51,12 @@ def query1(win_type):
                 .set_value_serialization_schema(SimpleStringSchema())\
                 .build())\
                 .build()
+        
         #Redirect input to output for testing TODO Remove
-        src.sink_to(sink)
+        src = env.from_source(source, WatermarkStrategy.no_watermarks(), "Kafka Source")
+        #parsed_stream = src.map(ParseCSVFunction(), output_type=Types.TUPLE([Types.STRING()] * 9))
+        #parsed_stream.map(PrintFunction()).set_parallelism(1)
+        src.sink_to(sink)        
         env.execute()
         
         
