@@ -4,9 +4,6 @@
 /opt/bitnami/kafka/bin/kafka-topics.sh --delete --topic $FLINK_TOPIC_NAME --bootstrap-server kafka:9092
 echo "topic $FLINK_TOPIC_NAME deleted"
 
-/opt/bitnami/kafka/bin/kafka-topics.sh --delete --topic $FLINK_TOPIC_NAME --bootstrap-server kafka:9092
-echo "topic $FLINK_TOPIC_NAME deleted"
-
 /opt/bitnami/kafka/bin/kafka-topics.sh --delete --topic $QUERY1_TOPIC_NAME --bootstrap-server kafka:9092
 echo "topic $QUERY1_TOPIC_NAME deleted"
 

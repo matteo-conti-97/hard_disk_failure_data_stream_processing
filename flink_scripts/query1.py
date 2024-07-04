@@ -20,8 +20,10 @@ class ParseCSVFunction(MapFunction):
         #Sline = line.replace("'", "")
         fields = line.split(",")
         if len(fields) == 39:
-            return (datetime.strptime(fields[0], format), fields[1], fields[2], int(fields[3]), int(fields[4]), float(fields[5]), float(fields[6]))
-            #return (datetime.strptime(fields[0], format), fields[1], fields[2], int(fields[3]), int(fields[4]), float(fields[12]), float(fields[25]))
+            if fields[0] == 'date' or fields[12] is None or fields[25] is None or fields[12] == '' or fields[25] == '' or fields[12] == ' ' or fields[25] == ' ':
+                return ("Invalid CSV line")    
+            #return (datetime.strptime(fields[0], format), fields[1], fields[2], int(fields[3]), int(fields[4]), float(fields[5]), float(fields[6]))
+            return (datetime.strptime(fields[0], format), fields[1], fields[2], int(fields[3]), int(fields[4]), float(fields[12]), float(fields[25]))
         else:
             # Handle if your CSV has different number of fields
             return ("Invalid CSV line")
@@ -64,25 +66,6 @@ def query1(win):
         
         
         src = env.from_source(source, WatermarkStrategy.no_watermarks(), "Kafka Source")
-        parsed_stream = src.map(ParseCSVFunction(), output_type=Types.TUPLE(
-                [Types.SQL_DATE(), 
-                 Types.STRING(), 
-                 Types.STRING(), 
-                 Types.INT(), 
-                 Types.INT(), 
-                 Types.FLOAT(), 
-                 Types.FLOAT()
-                 ]))\
-                .assign_timestamps_and_watermarks(WatermarkStrategy\
-                        .for_monotonous_timestamps()\
-                        .with_timestamp_assigner(CustomTimestampAssigner()))\
-                .map(lambda x: (x[0], x[4], x[6]), output_type=Types.TUPLE(
-                        [Types.SQL_DATE(), 
-                        Types.INT(), 
-                        Types.FLOAT()
-                        ]))\
-                .key_by(lambda x: x[1])\
-                .window(win).reduce(lambda x, y: (x[0], x[1], 1))
         # parsed_stream = src.map(ParseCSVFunction(), output_type=Types.TUPLE(
         #         [Types.SQL_DATE(), 
         #          Types.STRING(), 
@@ -102,9 +85,23 @@ def query1(win):
         #                 ]))\
         #         .key_by(lambda x: x[1])\
         #         .window(win).reduce(lambda x, y: (x[0], x[1], 1))
+        parsed_stream = src.map(ParseCSVFunction())\
+                .filter(lambda x: x != ("Invalid CSV line"))\
+                .assign_timestamps_and_watermarks(WatermarkStrategy\
+                        .for_monotonous_timestamps()\
+                        .with_timestamp_assigner(CustomTimestampAssigner()))\
+                .map(lambda x: (x[0], x[4], x[6]), output_type=Types.TUPLE(
+                        [Types.SQL_DATE(), 
+                        Types.INT(), 
+                        Types.FLOAT()
+                        ]))\
+                .filter(lambda x: 1000 <= x[1] <=1200)\
+                .key_by(lambda x: x[1])\
+                .window(win).reduce(lambda x, y: (x[0], x[1], 1))
                 
                                                
         parsed_stream.map(PrintFunction())
+        #parsed_stream.sink_to(sink)
         env.execute()
         
         
