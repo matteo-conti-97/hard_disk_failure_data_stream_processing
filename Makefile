@@ -17,3 +17,4 @@ kafka_topics:
 reset:
 	python flink_jobs.py
 	docker compose restart kafka-init taskmanager
+	clear

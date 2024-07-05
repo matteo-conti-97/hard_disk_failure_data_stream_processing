@@ -110,7 +110,7 @@ def query1(win):
                 .build()
         
         
-        src = env.from_source(source, WatermarkStrategy.for_monotonous_timestamps(), "Kafka Source")
+        src = env.from_source(source, WatermarkStrategy.no_watermarks(), "Kafka Source")
         # parsed_stream = src.map(ParseCSVFunction(), output_type=Types.TUPLE(
         #         [Types.SQL_DATE(), 
         #          Types.STRING(), 
@@ -169,7 +169,7 @@ if __name__ == '__main__':
                 win = TumblingEventTimeWindows.of(Time.days(1))
         elif win_type==str(2):
                 print("Window size: Three days")
-                win = TumblingEventTimeWindows.of(Time.days(3))
+                win = TumblingEventTimeWindows.of(Time.days(3), Time.days(2))
         elif win_type==str(3):
                 print("Window size: Global")
                 win = GlobalWindows.create()
