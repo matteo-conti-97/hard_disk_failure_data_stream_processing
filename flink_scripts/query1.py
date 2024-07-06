@@ -79,6 +79,8 @@ class EventCounter(AggregateFunction):
                 Types.FLOAT()
                 ])
 
+def tuple_to_csv_ser(tup):
+    return f"{tup[0]},{tup[1]},{tup[2]},{tup[3]},{tup[4]}"
 
 class CustomTimestampAssigner(TimestampAssigner):
     def extract_timestamp(self, value, record_timestamp):
@@ -151,10 +153,10 @@ def query1(win):
                         Types.FLOAT()
                         ])
                 )
-                
+        res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())     
                                                
-        parsed_stream.map(PrintFunction())
-        #parsed_stream.sink_to(sink)
+        #parsed_stream.map(PrintFunction())
+        res.sink_to(sink)
         env.execute()
         
         
