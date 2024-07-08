@@ -26,6 +26,7 @@ class MyTrigger(Trigger):
         self.idle_time_in_seconds = idle_time_in_seconds
         self.last_seen_timestamp = -1
         self.last_timer_time=-1
+        #self.isClosed=False
 
     def on_merge(self, window, ctx):
         return TriggerResult.CONTINUE
@@ -33,19 +34,19 @@ class MyTrigger(Trigger):
     def on_element(self, element, timestamp, window, ctx):
         current_time = time.time() * 1000
         self.last_seen_timestamp = current_time
-        if self.last_timer_time != -1:
-            ctx.delete_processing_time_timer(self.last_timer_time)
-        self.last_timer_time = current_time + 64 *1000
-        ctx.register_processing_time_timer(current_time + 30 * 1000)
+        ctx.delete_processing_time_timer(self.last_timer_time)
+        self.last_timer_time = current_time + 30 *1000
+        ctx.register_processing_time_timer(self.last_timer_time)
         return TriggerResult.CONTINUE
 
     def on_processing_time(self, tim, window, ctx):
-        print("TIMER FIRED")
         if self.last_seen_timestamp == -1:
             return TriggerResult.CONTINUE
         current_time = time.time() * 1000
         if current_time - self.last_seen_timestamp >= self.idle_time_in_seconds * 1000:
-            return TriggerResult.FIRE
+            #print("TIMER FIRED")
+            #self.isCloded=True
+            return TriggerResult.FIRE_AND_PURGE
         else:
             return TriggerResult.CONTINUE
 
@@ -237,8 +238,8 @@ def query1(win):
     
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
 
-    #parsed_stream.map(PrintFunction())
-    res.sink_to(sink)
+    parsed_stream.map(PrintFunction())
+    #res.sink_to(sink)
     env.execute()
 
 
