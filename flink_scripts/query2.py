@@ -126,7 +126,20 @@ class FailureCounter(AggregateFunction):
 
 
 def tuple_to_csv_ser(tup):
-    return f"{tup[0]},{tup[1]},{tup[2]},{tup[3]},{tup[4]}"
+    # Initialize an empty list to hold the string elements
+    elements = []
+    
+    # Iterate through each element in the tuple and append it to the list
+    for element in tup:
+        if isinstance(element, datetime):
+            elements.append(element.strftime('%Y-%m-%d'))
+        else:
+            elements.append(str(element))
+    
+    # Join the list elements into a single string separated by commas
+    result = ','.join(elements)
+    
+    return result
 
 
 class CustomTimestampAssigner(TimestampAssigner):
@@ -156,7 +169,7 @@ def query2(win):
         .set_bootstrap_servers("kafka:9092")
         .set_record_serializer(
             KafkaRecordSerializationSchema.builder()
-            .set_topic("query1_out")
+            .set_topic("query2_out")
             .set_value_serialization_schema(SimpleStringSchema())
             .build()
         )
@@ -191,16 +204,17 @@ def query2(win):
         .process(OrderProcessFunction())
     )
 
-    # Redirect input to output for testing TODO Remove
-    # src.sink_to(sink)
-    parsed_stream.map(PrintFunction())
+    res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
+    # parsed_stream.map(PrintFunction())
+    res.sink_to(sink)
+    
     env.execute()
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 5:
         print(
-            "Error in make command -> usage make run_query1 win_type=<win_type{1,2,3}={1day,3day,global}>"
+            "Error in make command -> usage make run_query2 win_type=<win_type{1,2,3}={1day,3day,global}>"
         )
         exit()
     win_type = sys.argv[1]
