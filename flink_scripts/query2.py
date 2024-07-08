@@ -150,7 +150,6 @@ class CustomTimestampAssigner(TimestampAssigner):
 def query2(win):
     env = StreamExecutionEnvironment.get_execution_environment()
     env.set_parallelism(1)
-    env.get_config().set_latency_tracking_interval(500)
 
     # Setup kafka source
     source = (
