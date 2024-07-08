@@ -55,10 +55,11 @@ services:
 #KAFKA INIT TOPIC
   kafka-init:
     container_name: kafka-init
-    image: bitnami/kafka:3
+    build: ./dockerfiles/kafka_init
+    #image: bitnami/kafka:3
     networks:
       - elt_cluster
-    command: [ "/bin/bash", "-c", "chmod +x /create_topic.sh && /create_topic.sh"]
+    #command: [ "/bin/bash", "-c", "chmod +x /create_topic.sh && /create_topic.sh"]
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - INGESTION_TOPIC_NAME=ingestion
