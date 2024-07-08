@@ -11,7 +11,7 @@ from pyflink.common.serialization import SimpleStringSchema
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.functions import MapFunction, AggregateFunction
 from pyflink.datastream.window import TumblingEventTimeWindows, GlobalWindows
-from pyflink.datastream import StreamExecutionEnvironment,  Trigger, TriggerResult
+from pyflink.datastream import StreamExecutionEnvironment, Trigger, TriggerResult
 from pyflink.common import Time
 from datetime import datetime
 import time
@@ -20,22 +20,23 @@ from math import sqrt
 
 format = "%Y-%m-%dT%H:%M:%S.%f"
 
+
 class MyTrigger(Trigger):
 
     def __init__(self, idle_time_in_seconds):
         self.idle_time_in_seconds = idle_time_in_seconds
         self.last_seen_timestamp = -1
-        self.last_timer_time=-1
-        #self.isClosed=False
+        self.last_timer_time = -1
+        # self.isClosed=False
 
     def on_merge(self, window, ctx):
         return TriggerResult.CONTINUE
-    
+
     def on_element(self, element, timestamp, window, ctx):
         current_time = time.time() * 1000
         self.last_seen_timestamp = current_time
         ctx.delete_processing_time_timer(self.last_timer_time)
-        self.last_timer_time = current_time + 30 *1000
+        self.last_timer_time = current_time + 30 * 1000
         ctx.register_processing_time_timer(self.last_timer_time)
         return TriggerResult.CONTINUE
 
@@ -44,8 +45,8 @@ class MyTrigger(Trigger):
             return TriggerResult.CONTINUE
         current_time = time.time() * 1000
         if current_time - self.last_seen_timestamp >= self.idle_time_in_seconds * 1000:
-            #print("TIMER FIRED")
-            #self.isCloded=True
+            # print("TIMER FIRED")
+            # self.isCloded=True
             return TriggerResult.FIRE_AND_PURGE
         else:
             return TriggerResult.CONTINUE
@@ -55,6 +56,7 @@ class MyTrigger(Trigger):
 
     def clear(self, window, ctx):
         pass
+
 
 class ParseCSVFunction(MapFunction):
 
@@ -137,17 +139,17 @@ class EventCounter(AggregateFunction):
 def tuple_to_csv_ser(tup):
     # Initialize an empty list to hold the string elements
     elements = []
-    
+
     # Iterate through each element in the tuple and append it to the list
     for element in tup:
         if isinstance(element, datetime):
-            elements.append(element.strftime('%Y-%m-%d'))
+            elements.append(element.strftime("%Y-%m-%d"))
         else:
             elements.append(str(element))
-    
+
     # Join the list elements into a single string separated by commas
-    result = ','.join(elements)
-    
+    result = ",".join(elements)
+
     return result
 
 
@@ -204,42 +206,47 @@ def query1(win):
     #                 ]))\
     #         .key_by(lambda x: x[1])\
     #         .window(win).reduce(lambda x, y: (x[0], x[1], 1))
-    parsed_stream = src.map(ParseCSVFunction())\
-        .filter(lambda x: x != ("Invalid CSV line"))\
+    parsed_stream = (
+        src.map(ParseCSVFunction())
+        .filter(lambda x: x != ("Invalid CSV line"))
         .assign_timestamps_and_watermarks(
             WatermarkStrategy.for_monotonous_timestamps().with_timestamp_assigner(
                 CustomTimestampAssigner()
             )
-        )\
+        )
         .map(
             lambda x: (x[0], x[4], x[6]),
             output_type=Types.TUPLE([Types.SQL_DATE(), Types.INT(), Types.FLOAT()]),
-        )\
-        .filter(lambda x: 1000 <= x[1] <= 1020)
-        
-    if isinstance(win, GlobalWindows):
-        parsed_stream=parsed_stream.key_by(lambda x: x[1]).window(win).trigger(MyTrigger(idle_time_in_seconds=25))
-    else:
-        parsed_stream=parsed_stream.key_by(lambda x: x[1]).window(win)
-    
-    parsed_stream=parsed_stream.aggregate(EventCounter())\
-        .map(
-            lambda x: (x[0], x[1], x[2], x[3], sqrt(x[4])),
-            output_type=Types.TUPLE(
-                [
-                    Types.SQL_DATE(),
-                    Types.INT(),
-                    Types.INT(),
-                    Types.FLOAT(),
-                    Types.FLOAT(),
-                ]
-            ),
         )
-    
+        .filter(lambda x: 1000 <= x[1] <= 1020)
+    )
+
+    if isinstance(win, GlobalWindows):
+        parsed_stream = (
+            parsed_stream.key_by(lambda x: x[1])
+            .window(win)
+            .trigger(MyTrigger(idle_time_in_seconds=25))
+        )
+    else:
+        parsed_stream = parsed_stream.key_by(lambda x: x[1]).window(win)
+
+    parsed_stream = parsed_stream.aggregate(EventCounter()).map(
+        lambda x: (x[0], x[1], x[2], x[3], sqrt(x[4])),
+        output_type=Types.TUPLE(
+            [
+                Types.SQL_DATE(),
+                Types.INT(),
+                Types.INT(),
+                Types.FLOAT(),
+                Types.FLOAT(),
+            ]
+        ),
+    )
+
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
 
-    parsed_stream.map(PrintFunction())
-    #res.sink_to(sink)
+    # parsed_stream.map(PrintFunction())
+    res.sink_to(sink)
     env.execute()
 
 
@@ -259,7 +266,6 @@ if __name__ == "__main__":
     elif win_type == str(3):
         print("Window size: Global")
         win = GlobalWindows.create()
-        #win = TumblingEventTimeWindows.of(Time.days(23), Time.days(13))
     else:
         print("Invalid window size exiting...")
         exit()

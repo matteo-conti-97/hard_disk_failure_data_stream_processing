@@ -15,7 +15,7 @@ from pyflink.datastream.functions import (
     ProcessAllWindowFunction,
 )
 from pyflink.datastream.window import TumblingEventTimeWindows, GlobalWindows
-from pyflink.datastream import StreamExecutionEnvironment
+from pyflink.datastream import StreamExecutionEnvironment, Trigger, TriggerResult
 
 from pyflink.common import Time
 from datetime import datetime
@@ -24,14 +24,51 @@ from operator import itemgetter
 format = "%Y-%m-%dT%H:%M:%S.%f"
 
 
+class MyTrigger(Trigger):
+
+    def __init__(self, idle_time_in_seconds):
+        self.idle_time_in_seconds = idle_time_in_seconds
+        self.last_seen_timestamp = -1
+        self.last_timer_time = -1
+        # self.isClosed=False
+
+    def on_merge(self, window, ctx):
+        return TriggerResult.CONTINUE
+
+    def on_element(self, element, timestamp, window, ctx):
+        current_time = time.time() * 1000
+        self.last_seen_timestamp = current_time
+        ctx.delete_processing_time_timer(self.last_timer_time)
+        self.last_timer_time = current_time + 30 * 1000
+        ctx.register_processing_time_timer(self.last_timer_time)
+        return TriggerResult.CONTINUE
+
+    def on_processing_time(self, tim, window, ctx):
+        if self.last_seen_timestamp == -1:
+            return TriggerResult.CONTINUE
+        current_time = time.time() * 1000
+        if current_time - self.last_seen_timestamp >= self.idle_time_in_seconds * 1000:
+            # print("TIMER FIRED")
+            # self.isCloded=True
+            return TriggerResult.FIRE_AND_PURGE
+        else:
+            return TriggerResult.CONTINUE
+
+    def on_event_time(self, time, window, ctx):
+        return TriggerResult.CONTINUE
+
+    def clear(self, window, ctx):
+        pass
+
+
 class OrderProcessFunction(ProcessAllWindowFunction):
     def process(self, content, elements):
         sorted_values = sorted(elements, key=itemgetter(2), reverse=True)
-        top = (sorted_values[0][0], )
+        top = (sorted_values[0][0],)
         for i in range(10):
             top = top + sorted_values[i][1:]
-        return (top, )
- 
+        return (top,)
+
 
 class ParseCSVFunction(MapFunction):
 
@@ -128,17 +165,17 @@ class FailureCounter(AggregateFunction):
 def tuple_to_csv_ser(tup):
     # Initialize an empty list to hold the string elements
     elements = []
-    
+
     # Iterate through each element in the tuple and append it to the list
     for element in tup:
         if isinstance(element, datetime):
-            elements.append(element.strftime('%Y-%m-%d'))
+            elements.append(element.strftime("%Y-%m-%d"))
         else:
             elements.append(str(element))
-    
+
     # Join the list elements into a single string separated by commas
-    result = ','.join(elements)
-    
+    result = ",".join(elements)
+
     return result
 
 
@@ -192,21 +229,30 @@ def query2(win):
                     Types.STRING(),
                     Types.STRING(),
                     Types.INT(),
-                    Types.INT()
+                    Types.INT(),
                 ]
             ),
         )
-        .key_by(lambda x: x[4])
-        .window(win)
-        .aggregate(FailureCounter())\
-        .window_all(win)\
+    )
+    if isinstance(win, GlobalWindows):
+        parsed_stream = (
+            parsed_stream.key_by(lambda x: x[1])
+            .window(win)
+            .trigger(MyTrigger(idle_time_in_seconds=25))
+        )
+    else:
+        parsed_stream = parsed_stream.key_by(lambda x: x[1]).window(win)
+
+    parsed_stream = (
+        parsed_stream.aggregate(FailureCounter())
+        .window_all(win)
         .process(OrderProcessFunction())
     )
 
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
     # parsed_stream.map(PrintFunction())
     res.sink_to(sink)
-    
+
     env.execute()
 
 

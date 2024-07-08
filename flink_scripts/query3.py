@@ -14,14 +14,52 @@ from pyflink.common.serialization import SimpleStringSchema
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.functions import MapFunction, AggregateFunction
 from pyflink.datastream.window import TumblingEventTimeWindows, GlobalWindows
-from pyflink.datastream import StreamExecutionEnvironment
+from pyflink.datastream import StreamExecutionEnvironment, Trigger, TriggerResult
 from pyflink.common import Time
 import sys
 from psquare.psquare import PSquare
 from datetime import datetime
-import math
+import time
 
 format = "%Y-%m-%dT%H:%M:%S.%f"
+
+
+class MyTrigger(Trigger):
+
+    def __init__(self, idle_time_in_seconds):
+        self.idle_time_in_seconds = idle_time_in_seconds
+        self.last_seen_timestamp = -1
+        self.last_timer_time = -1
+        # self.isClosed=False
+
+    def on_merge(self, window, ctx):
+        return TriggerResult.CONTINUE
+
+    def on_element(self, element, timestamp, window, ctx):
+        current_time = time.time() * 1000
+        self.last_seen_timestamp = current_time
+        ctx.delete_processing_time_timer(self.last_timer_time)
+        self.last_timer_time = current_time + 30 * 1000
+        ctx.register_processing_time_timer(self.last_timer_time)
+        return TriggerResult.CONTINUE
+
+    def on_processing_time(self, tim, window, ctx):
+        if self.last_seen_timestamp == -1:
+            return TriggerResult.CONTINUE
+        current_time = time.time() * 1000
+        if current_time - self.last_seen_timestamp >= self.idle_time_in_seconds * 1000:
+            # print("TIMER FIRED")
+            # self.isCloded=True
+            return TriggerResult.FIRE_AND_PURGE
+        else:
+            return TriggerResult.CONTINUE
+
+    def on_event_time(self, time, window, ctx):
+        return TriggerResult.CONTINUE
+
+    def clear(self, window, ctx):
+        pass
+
 
 def tuple_to_csv_ser(tup):
     # Initialize an empty list to hold the string elements
@@ -71,10 +109,12 @@ class ParseCSVFunction(MapFunction):
             # Handle if your CSV has different number of fields
             return "Invalid CSV line"
 
+
 class PrintFunction(MapFunction):
     def map(self, value):
         print(f"Record received: {value}")
         return value
+
 
 class CustomTimestampAssigner(TimestampAssigner):
     def extract_timestamp(self, value, record_timestamp):
@@ -83,7 +123,17 @@ class CustomTimestampAssigner(TimestampAssigner):
 
 class ComputePercentile(AggregateFunction):
     def create_accumulator(self):
-        return (None, None, 0, float('inf') ,PSquare(25), PSquare(50), PSquare(75), 0, datetime.min.date()) # date, vault_id, count, min, 25th, 50th, 75th, max, max_date
+        return (
+            None,
+            None,
+            0,
+            float("inf"),
+            PSquare(25),
+            PSquare(50),
+            PSquare(75),
+            0,
+            datetime.min.date(),
+        )  # date, vault_id, count, min, 25th, 50th, 75th, max, max_date
 
     def add(self, value, acc):
         date = value[0] if acc[0] is None else acc[0]
@@ -93,49 +143,67 @@ class ComputePercentile(AggregateFunction):
             pSquares = [PSquare(25), PSquare(50), PSquare(75)]
             for p in pSquares:
                 p.update(value[3])
-            return (acc[0], value[2], 1, value[3], pSquares[0], pSquares[1], pSquares[2], value[3], max_date)
+            return (
+                acc[0],
+                value[2],
+                1,
+                value[3],
+                pSquares[0],
+                pSquares[1],
+                pSquares[2],
+                value[3],
+                max_date,
+            )
         elif max_date > value[0]:
             return acc
         else:
             count = acc[2] + 1
             min_value = min(acc[3], value[3])
             acc[4].update(value[3])
-            acc[5].update(value[3]) 
+            acc[5].update(value[3])
             acc[6].update(value[3])
             max_value = max(acc[7], value[3])
-            
+
             return (
-                    date,
-                    value[2],
-                    count,
-                    min_value,
-                    acc[4],
-                    acc[5],
-                    acc[6],
-                    max_value,
-                    max_date
+                date,
+                value[2],
+                count,
+                min_value,
+                acc[4],
+                acc[5],
+                acc[6],
+                max_value,
+                max_date,
             )
 
     def get_result(self, acc):
         return (
-                acc[0],
-                acc[1],    
-                acc[2],
-                acc[3],
-                acc[4].p_estimate(),
-                acc[5].p_estimate(),
-                acc[6].p_estimate(),
-                acc[7]
+            acc[0],
+            acc[1],
+            acc[2],
+            acc[3],
+            acc[4].p_estimate(),
+            acc[5].p_estimate(),
+            acc[6].p_estimate(),
+            acc[7],
         )
 
     def merge(self, acc, acc1):
         return
 
-
     def get_result_type(self):
         # Define the data type of the result
         return Types.TUPLE(
-            [Types.SQL_DATE(), Types.INT(), Types.INT(), Types.FLOAT(), Types.FLOAT(), Types.FLOAT(), Types.FLOAT(), Types.FLOAT()]
+            [
+                Types.SQL_DATE(),
+                Types.INT(),
+                Types.INT(),
+                Types.FLOAT(),
+                Types.FLOAT(),
+                Types.FLOAT(),
+                Types.FLOAT(),
+                Types.FLOAT(),
+            ]
         )
 
 
@@ -183,13 +251,20 @@ def query3(win):
             ),
         )
         .filter(lambda x: 1090 <= x[2] <= 1120)
-        .key_by(lambda x: x[2])
-        .window(win)
-        .aggregate(ComputePercentile())
     )
+    if isinstance(win, GlobalWindows):
+        parsed_stream = (
+            parsed_stream.key_by(lambda x: x[1])
+            .window(win)
+            .trigger(MyTrigger(idle_time_in_seconds=25))
+        )
+    else:
+        parsed_stream = parsed_stream.key_by(lambda x: x[1]).window(win)
+
+    parsed_stream = parsed_stream.aggregate(ComputePercentile())
 
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
-    #parsed_stream.map(PrintFunction())
+    # parsed_stream.map(PrintFunction())
     res.sink_to(sink)
 
     env.execute()
