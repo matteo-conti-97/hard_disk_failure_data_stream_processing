@@ -15,7 +15,7 @@ services:
       - 5200:5200
     networks:
       - elt_cluster
-    profiles: [ingestion, all]
+    profiles: [ingestion]
 
   #KAFKA
   zookeeper:
@@ -102,7 +102,8 @@ services:
     depends_on:
       - jobmanager
     command: taskmanager
-    scale: 1
+    deploy:
+      replicas: 1
     environment:
       - |
         FLINK_PROPERTIES=

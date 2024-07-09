@@ -36,7 +36,7 @@ class MyTrigger(Trigger):
         current_time = time.time() * 1000
         self.last_seen_timestamp = current_time
         ctx.delete_processing_time_timer(self.last_timer_time)
-        self.last_timer_time = current_time + 30 * 1000
+        self.last_timer_time = current_time + 35 * 1000
         ctx.register_processing_time_timer(self.last_timer_time)
         return TriggerResult.CONTINUE
 
@@ -225,7 +225,7 @@ def query1(win):
         parsed_stream = (
             parsed_stream.key_by(lambda x: x[1])
             .window(win)
-            .trigger(MyTrigger(idle_time_in_seconds=25))
+            .trigger(MyTrigger(idle_time_in_seconds=30))
         )
     else:
         parsed_stream = parsed_stream.key_by(lambda x: x[1]).window(win)
@@ -245,7 +245,7 @@ def query1(win):
 
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
 
-    # parsed_stream.map(PrintFunction())
+    parsed_stream.map(PrintFunction())
     res.sink_to(sink)
     env.execute()
 
@@ -266,6 +266,7 @@ if __name__ == "__main__":
     elif win_type == str(3):
         print("Window size: Global")
         win = GlobalWindows.create()
+        # win = TumblingEventTimeWindows.of(Time.days(23), Time.days(13))
     else:
         print("Invalid window size exiting...")
         exit()

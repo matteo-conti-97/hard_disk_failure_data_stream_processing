@@ -1,5 +1,4 @@
 from pyflink.common.typeinfo import Types
-from pyflink.datastream import DataStream
 from pyflink.datastream.connectors.kafka import (
     KafkaSource,
     KafkaSink,
@@ -262,9 +261,8 @@ def query3(win):
         parsed_stream = parsed_stream.key_by(lambda x: x[1]).window(win)
 
     parsed_stream = parsed_stream.aggregate(ComputePercentile())
-
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
-    # parsed_stream.map(PrintFunction())
+    parsed_stream.map(PrintFunction())
     res.sink_to(sink)
 
     env.execute()

@@ -20,6 +20,7 @@ from pyflink.datastream import StreamExecutionEnvironment, Trigger, TriggerResul
 from pyflink.common import Time
 from datetime import datetime
 from operator import itemgetter
+import time
 
 format = "%Y-%m-%dT%H:%M:%S.%f"
 
@@ -250,7 +251,7 @@ def query2(win):
     )
 
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
-    # parsed_stream.map(PrintFunction())
+    parsed_stream.map(PrintFunction())
     res.sink_to(sink)
 
     env.execute()

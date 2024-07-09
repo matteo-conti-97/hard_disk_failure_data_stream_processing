@@ -1,0 +1,108 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{float} % for H placement option
+\usepackage{listings}
+\usepackage[colorlinks=true, linkcolor=red, urlcolor=blue, citecolor=blue]{hyperref}
+\usepackage{minted}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Hard disk failure data analysis\\}
+
+\author{\IEEEauthorblockN{Luca Falasca}
+\IEEEauthorblockA{\textit{0334722} \\
+luca.falasca@students.uniroma2.eu
+}
+\and
+\IEEEauthorblockN{Matteo Conti}
+\IEEEauthorblockA{\textit{0323728} \\
+matteo.conti97@students.uniroma2.eu
+}\\
+}
+
+
+\maketitle
+\thispagestyle{plain}
+\pagestyle{plain}
+
+\begin{abstract}
+    Questo studio presenta l'implementazione di una pipeline per lo stream processing di dati di grandi dimensioni, finalizzata all'analisi dei fallimenti dei dischi rigidi. La pipeline, containerizzata e gestita tramite Docker Compose, utilizza Apache Kafka per l'ingestion dei dati e la pubblicazione dell'output del processamento ed Apache Flink per il processamento. Il dataset analizzato, una versione ridotta di quello del Grand Challenge della conferenza ACM DEBS 2024, contiene informazioni su data di misurazione, identificativo del disco rigido, modello, ore di accensione e fallimenti. Per analizzare i dati e confrontare le prestazioni dei formati di file CSV e Parquet sono state eseguite tre query. TODO
+\end{abstract}
+
+\section{Introduzione}
+\subsection{Descrizione del problema}
+Il problema da affrontare consiste nell'eseguire stream processing di un dataset mediante l'uso di una pipeline basata su framework per Big Data simulando l'arrivo in real time dei dati. Nello specifico, l'obiettivo è analizzare un dataset contenente informazioni relative ai fallimenti dei dischi rigidi attraverso l'esecuzione di 3 query.
+\subsection{Obiettivi}
+L'obbiettivo del progetto è quello di eseguire le query proposte su Apache Flink e di valutare le prestazioni ottenute dalle stesse in termini di latenza e througput.
+\subsection{Dataset}
+Il dataset fornito è una versione ridotta di quello presentato nel Grand Challenge della conferenza ACM DEBS 2024. Delle numerose colonne presenti nel dataset, ne verranno selezionate solamente sette per l'esecuzione delle query, in particolare:
+\begin{itemize}
+    \item \textit{date}: data della misurazione
+    \item \textit{serial\_number}: identificativo del disco rigido
+    \item \textit{failure}: indica se il disco rigido ha avuto una failure o meno
+    \item \textit{model}: modello del disco rigido
+    \item \textit{vault\_id}: identificativo del gruppo di storage server
+    \item \textit{s9\_power\_on\_hours}: ore di accensione del disco rigido
+    \item \textit{s194\_temperature\_celsius}: temperatura del disco rigido in gradi celsius
+\end{itemize}
+Esplorando il dataset si può notare un'ambiguità nella colonna \textit{s9\_power\_on\_hours}, essa contiene dei valori 0. Questi valori possono essere interpretati in due modi:
+\begin{itemize}
+    \item Il dato è un errore di misurazione e quindi va eliminato
+    \item Il disco rigido è stato acceso per meno di un'ora al momento della misurazione
+\end{itemize}
+Date le seguenti considerazioni si è deciso di non eliminare i valori 0 e considerarli quindi validi. Questo andrà ad influenzare i risultati della query 3, in particolare questo sarà molto evidente per quanto riguarda il minimo delle ore di accensione.
+Le colonne \textit{s9\_power\_on\_hours} e \textit{s194\_temperature\_celsius} contiene anche diversi valori nulli, le righe corrispondenti a tali valori verranno eliminate in fase di preprocessamento.
+Inoltre, la colonna \textit{vault\_id} contiene elementi il cui valore non è un intero bensì la stringa "vault\_id", anche questa volta le righe corrispondenti a tali valori verranno eliminate in fase di preprocessamento.
+
+\section{Pipeline}
+
+\subsection{Data Ingestion}
+
+\subsection{Data Stream Processing}
+
+\subsubsection{Query 1}
+
+\subsubsection{Query 2}
+
+\subsubsection{Query 3}
+
+\subsection{Data Output}
+
+\subsection{Analisi delle prestazioni}
+\subsubsection{Configurazione ambiente}
+\char200{} \\
+Risorse hardware
+\begin{minted}[autogobble, fontsize=\scriptsize, frame=lines]{text}
+    Processors: AMD Ryzen™ 5 7530U with Radeon™ Graphics × 12
+    Memory: 16.0 GiB of RAM
+    Graphics Processor: AMD Radeon™ Graphics
+\end{minted}
+Risorse Docker
+\begin{minted}[autogobble, fontsize=\scriptsize, frame=lines]{text}
+    Processors: 6 core
+    Memory: 8 GiB of RAM
+\end{minted}
+Risorse Flink
+\begin{minted}[autogobble, fontsize=\scriptsize, frame=lines]{text}
+    Task Managers: 
+    Task Slots: 
+\end{minted}
+\subsubsection{Risultati}
+
+\section{Riferimenti}
+\begin{itemize}
+    \item \href{https://github.com/matteo-conti-97/hard_disk_failure_data_stream_processing}{Codice sorgente github}
+\end{itemize}
+\vspace{12pt}
+\end{document}
+
+    
