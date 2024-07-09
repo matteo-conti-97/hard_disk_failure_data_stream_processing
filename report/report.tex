@@ -61,9 +61,10 @@ Esplorando il dataset si può notare un'ambiguità nella colonna \textit{s9\_pow
 \end{itemize}
 Date le seguenti considerazioni si è deciso di non eliminare i valori 0 e considerarli quindi validi. Questo andrà ad influenzare i risultati della query 3, in particolare questo sarà molto evidente per quanto riguarda il minimo delle ore di accensione.
 Le colonne \textit{s9\_power\_on\_hours} e \textit{s194\_temperature\_celsius} contiene anche diversi valori nulli, le righe corrispondenti a tali valori verranno eliminate in fase di preprocessamento.
-Inoltre, la colonna \textit{vault\_id} contiene elementi il cui valore non è un intero bensì la stringa "vault\_id", anche questa volta le righe corrispondenti a tali valori verranno eliminate in fase di preprocessamento.
+Inoltre, righe di header ripetute ad esempio righe in cui il campo \textit{vault\_id} non è un intero bensì la stringa "vault\_id", anche questa volta tali righe verranno eliminate in fase di preprocessamento.
 
 \section{Pipeline}
+Per la gestione dei dati relativi ai guasti dei dischi rigidi, è stata implementata una pipeline (Fig. \ref{fig:pipeline}) il cui deploy è stato fatto tramite Docker Compose. La pipeline è composta da diverse componenti, ognuna delle quali svolge un compito specifico, in particolare è stato utilizzato Apache Kafka come sistema publish subscriber per la data ingestion e la scrittura dell'output ed Apache Flink per lo stream processing. Di seguito verrano illustrati i dettagli di ciascuna componente.
 
 \subsection{Data Ingestion}
 
