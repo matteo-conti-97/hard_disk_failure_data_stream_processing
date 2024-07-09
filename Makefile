@@ -14,3 +14,6 @@ reset:
 	python flink_jobs.py
 	docker compose restart kafka-init taskmanager
 	clear
+
+up:
+	docker compose --profile all up --build -d
