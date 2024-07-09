@@ -277,7 +277,7 @@ def query2(win):
 
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
     parsed_stream.map(PrintFunction())
-    parsed_stream.map(MetricMap())
+    parsed_stream = parsed_stream.map(MetricMap())
     res.sink_to(sink)
 
     env.execute()

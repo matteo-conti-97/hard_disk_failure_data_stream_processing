@@ -160,7 +160,7 @@ class EventCounter(AggregateFunction):
 
 
 def tuple_to_csv_ser(tup):
-    # Initialize an empty list to hold the string elements
+    # Initialize an empty   \ list to hold the string elements
     elements = []
 
     # Iterate through each element in the tuple and append it to the list
@@ -269,7 +269,7 @@ def query1(win):
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
 
     parsed_stream.map(PrintFunction())
-    parsed_stream.map(MetricMap())
+    parsed_stream = parsed_stream.map(MetricMap())
     res.sink_to(sink)
     env.execute()
 
