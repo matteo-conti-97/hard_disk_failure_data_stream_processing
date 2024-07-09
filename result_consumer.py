@@ -68,7 +68,7 @@ def main(query, window):
     print("Header written")
     
     start=Time.time()
-    while Time.time()-start<8*60:   #8 minuti
+    while Time.time()-start<10*60:   #10 minuti
         msg=cons.poll(1.0) #timeout
         if msg is None:
             continue

@@ -277,12 +277,12 @@ def query3(win):
     )
     if isinstance(win, GlobalWindows):
         parsed_stream = (
-            parsed_stream.key_by(lambda x: x[1])
+            parsed_stream.key_by(lambda x: x[2])
             .window(win)
-            .trigger(MyTrigger(idle_time_in_seconds=25))
+            .trigger(MyTrigger(idle_time_in_seconds=30))
         )
     else:
-        parsed_stream = parsed_stream.key_by(lambda x: x[1]).window(win)
+        parsed_stream = parsed_stream.key_by(lambda x: x[2]).window(win)
 
     parsed_stream = parsed_stream.aggregate(ComputePercentile())
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())

@@ -262,12 +262,12 @@ def query2(win):
     )
     if isinstance(win, GlobalWindows):
         parsed_stream = (
-            parsed_stream.key_by(lambda x: x[1])
+            parsed_stream.key_by(lambda x: x[4])
             .window(win)
-            .trigger(MyTrigger(idle_time_in_seconds=25))
+            .trigger(MyTrigger(idle_time_in_seconds=30))
         )
     else:
-        parsed_stream = parsed_stream.key_by(lambda x: x[1]).window(win)
+        parsed_stream = parsed_stream.key_by(lambda x: x[4]).window(win)
 
     parsed_stream = (
         parsed_stream.aggregate(FailureCounter())
