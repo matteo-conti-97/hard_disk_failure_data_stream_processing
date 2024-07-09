@@ -20,6 +20,29 @@ from math import sqrt
 
 format = "%Y-%m-%dT%H:%M:%S.%f"
 
+class MetricMap(MapFunction):
+    def __init__(self):
+        self.meter = None
+        self.start = time.time()
+        self.count = 0
+        self.tp = 0.0
+        self.latency = 0.0
+
+    def open(self, runtime_context):
+        self.meter = runtime_context\
+            .get_metrics_group()\
+            .gauge("my_Throughput", lambda :self.tp*1000000)
+        self.meter = runtime_context\
+            .get_metrics_group()\
+            .gauge("my_latency", lambda :self.latency)
+        self.start = time.time()
+
+    def map(self, value: str):
+        end = (time.time()-self.start)
+        self.count += 1
+        self.tp = self.count/end
+        self.latency = (end*1000)/self.count
+        return value
 
 class MyTrigger(Trigger):
 
@@ -246,6 +269,7 @@ def query1(win):
     res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
 
     parsed_stream.map(PrintFunction())
+    parsed_stream.map(MetricMap())
     res.sink_to(sink)
     env.execute()
 
