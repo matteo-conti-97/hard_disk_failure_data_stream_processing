@@ -8,6 +8,7 @@ import pandas as pd
 # Indirizzo Flink
 base_url = "http://localhost:8081"
 regex = "[0-9].numRecordsOutPerSecond.*"
+regex_lat = ".*my_latency.*"
 
 def plot_throughput(title, file_name):
     dati = pd.read_csv(file_name + ".csv")
@@ -16,15 +17,25 @@ def plot_throughput(title, file_name):
     # Aggiungere etichette e titolo
     plt.xlabel('Tempo (s)')
     plt.ylabel('Throughput')
-    plt.title(title)
+    plt.title(title + " - Throughput")
 
     # Mostrare il grafico
     plt.savefig(file_name + ".png")
 
+    plt.plot(dati['Time(s)'], dati['Latency'])
+
+    # Aggiungere etichette e titolo
+    plt.xlabel('Tempo (s)')
+    plt.ylabel('Latency')
+    plt.title(title + " - Latency")
+
+    # Mostrare il grafico
+    plt.savefig(file_name + "_latency.png")
+
 def metric_retrieve(title, file_name):
     with open(file_name + ".csv", "w") as f:
-        f.write("Time(s),Throughput\n")
-        f.write("0,0\n")
+        f.write("Time(s),Throughput, Latency\n")
+        f.write("0,0,0\n")
         my_job = None
         t = 1
         while True:
@@ -40,20 +51,42 @@ def metric_retrieve(title, file_name):
                         my_job = job['id']
                     res = requests.get(f"{base_url}/jobs/{job['id']}")
                     job_spec = res.json()
+                    latency = None
+                    throughput = None
                     for vertex in job_spec['vertices']:
                         res = requests.get(f"{base_url}/jobs/{job['id']}/vertices/{vertex['id']}/metrics")
+                        #print(f"{base_url}/jobs/{job['id']}/vertices/{vertex['id']}/metrics")
                         metrics = res.json()
                         for metric in metrics:
-                            if re.search(regex, metric['id']):
+                            if re.search(regex_lat, metric['id']):
                                 res = requests.get(f"{base_url}/jobs/{job['id']}/vertices/{vertex['id']}/metrics?get={metric['id']}")
                                 metric_info = res.json()
                                 
                                 if float(metric_info[0]['value']) == 0.0:
                                     continue
                                 print(f"ID {metric_info[0]['id']} - Value {metric_info[0]['value']}")
-                                f.write(f"{t},{metric_info[0]['value']}\n")
+                                #f.write(f"{t},{metric_info[0]['value']}")
+                                latency = metric_info[0]['value']
                                 time.sleep(1)
                                 t += 1
+                            if re.search(regex, metric['id']) and throughput is None:
+                                res = requests.get(f"{base_url}/jobs/{job['id']}/vertices/{vertex['id']}/metrics?get={metric['id']}")
+                                metric_info = res.json()
+                                
+                                if float(metric_info[0]['value']) == 0.0:
+                                    continue
+                                print(f"ID {metric_info[0]['id']} - Value {metric_info[0]['value']}")
+                                #f.write(f"{t},{metric_info[0]['value']}\n")
+                                throughput = metric_info[0]['value']
+                                time.sleep(1)
+                                t += 1
+                                break
+                    if latency is not None and throughput is not None:
+                        f.write(f"{t},{throughput},{latency}\n")
+                        time.sleep(1)
+                        t += 1
+                        latency = None
+                        throughput = None
 
 if __name__ == "__main__":
     metric_retrieve(sys.argv[1], sys.argv[2])
