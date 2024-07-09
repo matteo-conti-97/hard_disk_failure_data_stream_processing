@@ -14,3 +14,30 @@ reset:
 	python flink_jobs.py
 	docker compose restart kafka-init taskmanager
 	clear
+
+write_result_query1_win_1:
+	python result_consumer.py 1 1
+
+write_result_query1_win_3:
+	python result_consumer.py 1 3
+
+write_result_query1_win_global:
+	python result_consumer.py 1 global
+
+write_result_query2_win_1:
+	python result_consumer.py 2 1
+
+write_result_query2_win_3:
+	python result_consumer.py 2 3
+	
+write_result_query2_win_global:
+	python result_consumer.py 2 global
+
+write_result_query3_win_1:
+	python result_consumer.py 3 1
+
+write_result_query3_win_3:
+	python result_consumer.py 3 3
+	
+write_result_query3_win_global:
+	python result_consumer.py 3 global
