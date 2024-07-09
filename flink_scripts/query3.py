@@ -285,9 +285,12 @@ def query3(win):
         parsed_stream = parsed_stream.key_by(lambda x: x[2]).window(win)
 
     parsed_stream = parsed_stream.aggregate(ComputePercentile())
-    res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
-    parsed_stream.map(PrintFunction())
+    
     parsed_stream = parsed_stream.map(MetricMap())
+    parsed_stream.map(PrintFunction())
+    
+    #Serialize and put to kafka
+    res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
     res.sink_to(sink)
 
     env.execute()

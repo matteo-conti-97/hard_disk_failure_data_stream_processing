@@ -275,9 +275,11 @@ def query2(win):
         .process(OrderProcessFunction())
     )
 
-    res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
-    parsed_stream.map(PrintFunction())
     parsed_stream = parsed_stream.map(MetricMap())
+    parsed_stream.map(PrintFunction())
+    
+    #Serialize and put to kafka
+    res = parsed_stream.map(lambda x: tuple_to_csv_ser(x), output_type=Types.STRING())
     res.sink_to(sink)
 
     env.execute()
