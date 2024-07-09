@@ -266,6 +266,7 @@ if __name__ == "__main__":
     elif win_type == str(3):
         print("Window size: Global")
         win = GlobalWindows.create()
+        # win = TumblingEventTimeWindows.of(Time.days(23), Time.days(13))
     else:
         print("Invalid window size exiting...")
         exit()

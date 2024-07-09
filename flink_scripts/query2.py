@@ -20,6 +20,7 @@ from pyflink.datastream import StreamExecutionEnvironment, Trigger, TriggerResul
 from pyflink.common import Time
 from datetime import datetime
 from operator import itemgetter
+import time
 
 format = "%Y-%m-%dT%H:%M:%S.%f"
 
