@@ -66,15 +66,16 @@ def metric_retrieve(title, file_name):
                                 res = requests.get(f"{base_url}/jobs/{job['id']}/vertices/{vertex['id']}/metrics?get={metric['id']}")
                                 metric_info = res.json()
                                 
-                                if float(metric_info[0]['value']) == 0.0:
-                                    continue
+                                
                                 print(f"ID {metric_info[0]['id']} - Value {metric_info[0]['value']}")
                                 #f.write(f"{t},{metric_info[0]['value']}")
                                 latency = metric_info[0]['value']
                                 time.sleep(1)
-                            if re.search(regex, metric['id']) and throughput is None:
+                            if re.search(regex, metric['id']):
                                 res = requests.get(f"{base_url}/jobs/{job['id']}/vertices/{vertex['id']}/metrics?get={metric['id']}")
                                 metric_info = res.json()
+                                if float(metric_info[0]['value']) == 0.0:
+                                    continue
                                 print(f"ID {metric_info[0]['id']} - Value {metric_info[0]['value']}")
                                 #f.write(f"{t},{metric_info[0]['value']}\n")
                                 throughput = metric_info[0]['value']
@@ -84,8 +85,8 @@ def metric_retrieve(title, file_name):
                     f.flush()
                     time.sleep(1)
                     t += 1
-                    latency = None
-                    throughput = None
+                    latency = 0
+                    throughput = 0
 
 if __name__ == "__main__":
     metric_retrieve(sys.argv[1], sys.argv[2])
