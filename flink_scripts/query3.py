@@ -62,7 +62,7 @@ class MyTrigger(Trigger):
         current_time = time.time() * 1000
         self.last_seen_timestamp = current_time
         ctx.delete_processing_time_timer(self.last_timer_time)
-        self.last_timer_time = current_time + 30 * 1000
+        self.last_timer_time = current_time + 35 * 1000
         ctx.register_processing_time_timer(self.last_timer_time)
         return TriggerResult.CONTINUE
 
