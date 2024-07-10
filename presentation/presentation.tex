@@ -136,7 +136,29 @@
 %---------------------------------------------------------
 
 \subsection{Data ingestion}
-
+\begin{itemize}
+    \item \textbf{Replay Accelerato del Dataset}
+        \begin{itemize}
+            \item Fattore di accelerazione: 3600 (1 secondo reale = 1 ora simulata)
+        \end{itemize}
+    \item \textbf{Granularità Giornaliera}
+        \begin{itemize}
+            \item Dati giornalieri spalmati uniformemente
+            \item Divisione logica della giornata in 150000 parti
+            \item Ogni parte rappresenta 1/150000 di giorno
+        \end{itemize}
+    \item \textbf{Invio delle Tuple}
+        \begin{itemize}
+            \item Calcolo del tempo di invio della prima tupla
+            \item Sleep per riempire lo slot residuo dopo l'invio di ogni tupla
+            \item Sleep finale per riempire il tempo rimanente alla fine della giornata
+        \end{itemize}
+    \item \textbf{Pubblicazione su Kafka}
+        \begin{itemize}
+            \item Dati pubblicati su un topic dedicato
+            \item Consumo dei dati tramite Flink
+        \end{itemize}
+\end{itemize}
 
 \subsection{Data processing}
 
