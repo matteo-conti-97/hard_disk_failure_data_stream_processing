@@ -180,7 +180,81 @@
 \subsection{Risultati}
 
 
+
+
+
+
 \subsection{Performance}
+\begin{frame}
+    \frametitle{Metriche per le Query}
+    \begin{itemize}
+        \item \textbf{Latenza}
+            \begin{itemize}
+                \item Utilizzo di una metrica custom con l'oggetto \texttt{Gauge} offerto da Flink
+                \item Fornisce metriche on demand
+            \end{itemize}
+        \item \textbf{Throughput}
+            \begin{itemize}
+                \item Utilizzo della metrica built-in di Flink \texttt{NumRecordsOutPerSecond}
+                \item Misura il throughput in elementi al secondo
+            \end{itemize}
+    \end{itemize}
+    \vspace{0.5cm}
+    \begin{itemize}
+        \item Entrambe le metriche sono disponibili tramite l'interfaccia web di Flink
+        \item Accessibili tramite REST API
+    \end{itemize}
+    \vspace{0.5cm}
+    \begin{itemize}
+        \item Campionamento delle metriche ad intervalli regolari di 1 secondo
+        \item Utilizzo di uno script Python per richiedere le metriche al job manager via REST API
+        \item Salvataggio dei risultati in un file CSV per la successiva visualizzazione grafica
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Query1}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \includegraphics[width=.7\textwidth]{res/q1_w1_latency.png}
+        \includegraphics[width=.7\textwidth]{res/q1_w2_latency.png}
+        \includegraphics[width=.7\textwidth]{res/q1_w3_latency.png}
+        \column{0.5\textwidth}
+        \includegraphics[width=.7\textwidth]{res/q1_w1_throughput.png}
+        \includegraphics[width=.7\textwidth]{res/q1_w2_throughput.png}
+        \includegraphics[width=.7\textwidth]{res/q1_w3_throughput.png}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Query2}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \includegraphics[width=.7\textwidth]{res/q2_w1_latency.png}
+        \includegraphics[width=.7\textwidth]{res/q2_w2_latency.png}
+        \includegraphics[width=.7\textwidth]{res/q2_w3_latency.png}
+        \column{0.5\textwidth}
+        \includegraphics[width=.7\textwidth]{res/q2_w1_throughput.png}
+        \includegraphics[width=.7\textwidth]{res/q2_w2_throughput.png}
+        \includegraphics[width=.7\textwidth]{res/q2_w3_throughput.png}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Query3}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \includegraphics[width=.7\textwidth]{res/q3_w1_latency.png}
+        \includegraphics[width=.7\textwidth]{res/q3_w2_latency.png}
+        \includegraphics[width=.7\textwidth]{res/q3_w3_latency.png}
+        \column{0.5\textwidth}
+        \includegraphics[width=.7\textwidth]{res/q3_w1_throughput.png}
+        \includegraphics[width=.7\textwidth]{res/q3_w2_throughput.png}
+        \includegraphics[width=.7\textwidth]{res/q3_w3_throughput.png}
+    \end{columns}
+\end{frame}
 
 
 %---------------------------------------------------------
