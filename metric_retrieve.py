@@ -12,29 +12,33 @@ regex_lat = ".*my_latency.*"
 
 def plot_throughput(title, file_name):
     dati = pd.read_csv(file_name + ".csv")
+    plt.figure(figsize=(10, 5))
     plt.plot(dati['Time(s)'], dati['Throughput'])
 
     # Aggiungere etichette e titolo
     plt.xlabel('Tempo (s)')
-    plt.ylabel('Throughput')
+    plt.ylabel('Throughput (record/s)')
     plt.title(title + " - Throughput")
 
     # Mostrare il grafico
-    plt.savefig(file_name + ".png")
+    plt.savefig(file_name + "_throughput.png")
+    plt.close()
 
+    plt.figure(figsize=(10, 5))
     plt.plot(dati['Time(s)'], dati['Latency'])
 
     # Aggiungere etichette e titolo
     plt.xlabel('Tempo (s)')
-    plt.ylabel('Latency')
+    plt.ylabel('Latency (ms)')
     plt.title(title + " - Latency")
 
     # Mostrare il grafico
     plt.savefig(file_name + "_latency.png")
+    plt.close()
 
 def metric_retrieve(title, file_name):
     with open(file_name + ".csv", "w") as f:
-        f.write("Time(s),Throughput, Latency\n")
+        f.write("Time(s),Throughput,Latency\n")
         f.write("0,0,0\n")
         my_job = None
         t = 1
@@ -90,4 +94,5 @@ def metric_retrieve(title, file_name):
 
 if __name__ == "__main__":
     metric_retrieve(sys.argv[1], sys.argv[2])
+    #plot_throughput(sys.argv[1], sys.argv[2])
                 
