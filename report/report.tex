@@ -106,6 +106,13 @@ La terza query prevede di calcolare il minimo, 25-esimo, 50-esimo, 75-esimo perc
 Per la scrittura dell'output del processamento è stato utilizzato Apache Kafka, in particolare sono stati creati tre topic, uno per ogni query, in cui vengono scritti i risultati delle stesse. I topic sono stati creati tramite un'apposita API di Kafka e vengono consumati da un'applicazione esterna che si occupa di scrivere i risultati su file in formato csv
 
 \subsection{Analisi delle prestazioni}
+\subsubsection{Metriche}
+Le metriche misurate per le 3 query sono la latenza e il throughput. 
+\begin{itemize}
+    \item Per la latenza è stata utilizzata una metrica custom tramite l'oggetto Gauge offerto da Flink che fornisce metriche on demand
+    \item Per il throughput è stata utilizzata la metrica built-in di Flink che fornisce il throughput in elementi al secondo NumRecordsOutPerSecond
+\end{itemize}
+Entrambe queste metriche sono disponibili tramite l'interfaccia web di Flink e sono accessibili tramite REST API. Quindi le suddette metriche sono state campionate ad intervalli regolari di 1 secondo tramite uno script python che fa richieste alle REST API di Flink e salva i risultati in un file csv per poi graficarli.
 \subsubsection{Query 1}
 \subsubsection{Query 2}
 \subsubsection{Query 3}
