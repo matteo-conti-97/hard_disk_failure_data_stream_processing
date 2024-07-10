@@ -52,10 +52,11 @@ class MetricMap(MapFunction):
 
 class MyTrigger(Trigger):
 
-    def __init__(self, idle_time_in_seconds):
+    def __init__(self, idle_time_in_seconds, timer_duration):
         self.idle_time_in_seconds = idle_time_in_seconds
         self.last_seen_timestamp = -1
         self.last_timer_time = -1
+        self.timer_duration = timer_duration
         # self.isClosed=False
 
     def on_merge(self, window, ctx):
@@ -65,7 +66,7 @@ class MyTrigger(Trigger):
         current_time = time.time() * 1000
         self.last_seen_timestamp = current_time
         ctx.delete_processing_time_timer(self.last_timer_time)
-        self.last_timer_time = current_time + 30 * 1000
+        self.last_timer_time = current_time + self.timer_duration * 1000
         ctx.register_processing_time_timer(self.last_timer_time)
         return TriggerResult.CONTINUE
 
@@ -74,7 +75,7 @@ class MyTrigger(Trigger):
             return TriggerResult.CONTINUE
         current_time = time.time() * 1000
         if current_time - self.last_seen_timestamp >= self.idle_time_in_seconds * 1000:
-            # print("TIMER FIRED")
+            print("TIMER FIRED - WINDOW CLOSED AND PURGED")
             # self.isCloded=True
             return TriggerResult.FIRE_AND_PURGE
         else:
@@ -89,6 +90,7 @@ class MyTrigger(Trigger):
 
 class OrderProcessFunction(ProcessAllWindowFunction):
     def process(self, content, elements):
+        print("Processing window")
         sorted_values = sorted(elements, key=itemgetter(2), reverse=True)
         top = (sorted_values[0][0],)
         for i in range(10):
@@ -264,16 +266,18 @@ def query2(win):
         parsed_stream = (
             parsed_stream.key_by(lambda x: x[4])
             .window(win)
-            .trigger(MyTrigger(idle_time_in_seconds=30))
+            .trigger(MyTrigger(idle_time_in_seconds=30, timer_duration=35))
+            .aggregate(FailureCounter())
+            .window_all(win).trigger(MyTrigger(idle_time_in_seconds=35, timer_duration=40))
         )
     else:
-        parsed_stream = parsed_stream.key_by(lambda x: x[4]).window(win)
-
-    parsed_stream = (
-        parsed_stream.aggregate(FailureCounter())
-        .window_all(win)
-        .process(OrderProcessFunction())
-    )
+        parsed_stream = (
+            parsed_stream.key_by(lambda x: x[4])
+            .window(win)
+            .aggregate(FailureCounter())
+            .window_all(win)
+        )
+    parsed_stream = parsed_stream.process(OrderProcessFunction())
 
     parsed_stream = parsed_stream.map(MetricMap())
     parsed_stream.map(PrintFunction())
