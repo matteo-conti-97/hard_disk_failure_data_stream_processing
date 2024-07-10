@@ -55,8 +55,8 @@ def metric_retrieve(title, file_name):
                         my_job = job['id']
                     res = requests.get(f"{base_url}/jobs/{job['id']}")
                     job_spec = res.json()
-                    latency = None
-                    throughput = None
+                    latency = 0
+                    throughput = 0
                     for vertex in job_spec['vertices']:
                         res = requests.get(f"{base_url}/jobs/{job['id']}/vertices/{vertex['id']}/metrics")
                         #print(f"{base_url}/jobs/{job['id']}/vertices/{vertex['id']}/metrics")
@@ -72,25 +72,20 @@ def metric_retrieve(title, file_name):
                                 #f.write(f"{t},{metric_info[0]['value']}")
                                 latency = metric_info[0]['value']
                                 time.sleep(1)
-                                t += 1
                             if re.search(regex, metric['id']) and throughput is None:
                                 res = requests.get(f"{base_url}/jobs/{job['id']}/vertices/{vertex['id']}/metrics?get={metric['id']}")
                                 metric_info = res.json()
-                                
-                                if float(metric_info[0]['value']) == 0.0:
-                                    continue
                                 print(f"ID {metric_info[0]['id']} - Value {metric_info[0]['value']}")
                                 #f.write(f"{t},{metric_info[0]['value']}\n")
                                 throughput = metric_info[0]['value']
                                 time.sleep(1)
-                                t += 1
                                 break
-                    if latency is not None and throughput is not None:
-                        f.write(f"{t},{throughput},{latency}\n")
-                        time.sleep(1)
-                        t += 1
-                        latency = None
-                        throughput = None
+                    f.write(f"{t},{throughput},{latency}\n")
+                    f.flush()
+                    time.sleep(1)
+                    t += 1
+                    latency = None
+                    throughput = None
 
 if __name__ == "__main__":
     metric_retrieve(sys.argv[1], sys.argv[2])
