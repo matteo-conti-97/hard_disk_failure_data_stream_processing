@@ -114,6 +114,43 @@ Le metriche misurate per le 3 query sono la latenza e il throughput.
 \end{itemize}
 Entrambe queste metriche sono disponibili tramite l'interfaccia web di Flink e sono accessibili tramite REST API. Quindi le suddette metriche sono state campionate ad intervalli regolari di 1 secondo tramite uno script python che fa richieste alle REST API di Flink e salva i risultati in un file csv per poi graficarli.
 \subsubsection{Query 1}
+Si può notare che per la prima query i risultati per le finestre di 1 giorno e 3 giorni sono essenzialmente gli stessi, mantenendo una latenza e throughput pressochè costanti. Tuttavia nella finestra globale si può notare un risultato differente in cui il throughput e la latenza aumentano in maniera lineare fino alla fine del processamento. Questo è probabilmente dovuto al fatto che la finestra globale mandando il risultato solo alla fine del processamento non ha throughput limitato dal dover mandare il risultato ad intervalli regolari.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./res/q1_w1_latency.png}
+    \caption{Latency Query 1 - Window 1 day}
+    \label{fig:query1_latency_w1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./res/q1_w1_throughput.png}
+    \caption{Throughput Query 1 - Window 1 day}
+    \label{fig:query1_throughput_w1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./res/q1_w2_latency.png}
+    \caption{Latency Query 1 - Window 3 day}
+    \label{fig:query1_latency_w2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./res/q1_w2_throughput.png}
+    \caption{Throughput Query 1 - Window 3 day}
+    \label{fig:query1_throughput_w2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./res/q1_w3_latency.png}
+    \caption{Latency Query 1 - Window Global}
+    \label{fig:query1_latency_w3}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./res/q1_w3_throughput.png}
+    \caption{Throughput Query 1 - Window Global}
+    \label{fig:query1_throughput_w3}
+\end{figure}
 \subsubsection{Query 2}
 \subsubsection{Query 3}
 \subsubsection{Configurazione ambiente}
@@ -127,7 +164,7 @@ Risorse hardware
 Risorse Docker
 \begin{minted}[autogobble, fontsize=\scriptsize, frame=lines]{text}
     Processors: 6 core
-    Memory: 8 GiB of RAM
+    Memory: 4 GiB of RAM
 \end{minted}
 Risorse Flink
 \begin{minted}[autogobble, fontsize=\scriptsize, frame=lines]{text}
