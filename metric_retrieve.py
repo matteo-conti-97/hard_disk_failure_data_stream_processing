@@ -41,7 +41,7 @@ def metric_retrieve(title, file_name):
         f.write("Time(s),Throughput,Latency\n")
         f.write("0,0,0\n")
         my_job = None
-        t = 1
+        t = time.time()
         while True:
             response = requests.get(f"{base_url}/jobs")
             jobs = response.json()
@@ -81,10 +81,11 @@ def metric_retrieve(title, file_name):
                                 throughput = metric_info[0]['value']
                                 time.sleep(1)
                                 break
-                    f.write(f"{t},{throughput},{latency}\n")
+                    tempo = time.time() - t
+                    f.write(f"{tempo},{throughput},{latency}\n")
                     f.flush()
                     time.sleep(1)
-                    t += 1
+                    t = time.time()
                     latency = 0
                     throughput = 0
 
