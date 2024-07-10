@@ -81,11 +81,10 @@ def metric_retrieve(title, file_name):
                                 throughput = metric_info[0]['value']
                                 time.sleep(1)
                                 break
-                    tempo = time.time() - t
+                    tempo = round(time.time() - t, 0)
                     f.write(f"{tempo},{throughput},{latency}\n")
                     f.flush()
                     time.sleep(1)
-                    t = time.time()
                     latency = 0
                     throughput = 0
 
