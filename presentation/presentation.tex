@@ -162,14 +162,22 @@
     \end{itemize}
 \end{frame}
 
-\subsection{Data processing}
-\begin{frame}{Data rocessing}
+\section{Data processing}
+
+\setLayout{mainpoint}
+\setBGColor{TorVergataGreen}
+\begin{frame}{}
+    \frametitle{Data processing}
+\end{frame}
+\setLayout{vertical}
+
+\begin{frame}{Data processing}
 Per il processamento streaming è stato utilizzato il framework Apache Flink, con un cluster formato da un job manager ed task manager dotato di un solo task slot, tali valori sono configurabili.
 \begin{adjustbox}{margin=0cm 0cm 0cm 1cm, center}% left, bottom, right, top
     \includegraphics[width=.5\textwidth]{res/flink_icon.png}
 \end{adjustbox}
 \end{frame}
-
+\subsection{Query 1}
 \begin{frame}{Data Processing-Query 1 (1)}
     \textbf{Q1:} Per i vault con identificativo compreso tra 1000 e 1020, calcolare il numero di
     eventi, il valor medio e la deviazione standard della temperatura misurata sui suoi hard disk utilizzando un algoritmo per il calcolo online di tali statistiche. La query va eseguita con finestre di 1 giorno, 3 giorni e globale.
@@ -188,7 +196,7 @@ Per il processamento streaming è stato utilizzato il framework Apache Flink, co
     \end{equation}
     Come si può vedere in realtà viene calcolata la varianza, successivamente verrà calcolata la deviazione standard come $\sigma = \sqrt{\sigma^2}$
 \end{frame}
-
+\subsection{Query 2}
 \begin{frame}{Data Processing-Query 2}
     \textbf{Q2:} 
     Calcolare la classifica aggiornata in tempo reale dei 10 vault che registrano il pi`u alto numero di falli-
@@ -198,7 +206,7 @@ Per il processamento streaming è stato utilizzato il framework Apache Flink, co
         \includegraphics[width=1\textwidth]{res/query2_dag.png}
     \end{adjustbox}
 \end{frame}
-
+\subsection{Query 3}
 \begin{frame}{Data Processing-Query 3 (1)}
     \textbf{Q3:} Calcolare il minimo, 25-esimo, 50-esimo, 75-esimo percentile e massimo delle ore di funzionamento
     degli hark disk per i vault con identificativo tra 1090 e 1120, senza accumulare i valori per eseguire il calcolo. La query va eseguita con finestre di 1 giorno, 3 giorni e globale.
@@ -225,16 +233,14 @@ Per la scrittura dell'output del processamento è stato utilizzato Apache Kafka,
 
 
 %---------------------CONCLUSIONI---------------------------
-\section{Conclusioni}
+\section{Performance}
 \setLayout{mainpoint}
 \setBGColor{TorVergataGreen}
 \begin{frame}{}
-    \frametitle{Conclusioni}
+    \frametitle{Performance}
 \end{frame}
 
 \setLayout{vertical}
-\subsection{Risultati}
-
 \subsection{Performance}
 \begin{frame}
     \frametitle{Metriche per le Query}
