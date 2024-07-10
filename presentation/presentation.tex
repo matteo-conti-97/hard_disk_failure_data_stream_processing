@@ -163,9 +163,65 @@
 \end{frame}
 
 \subsection{Data processing}
+\begin{frame}{Data rocessing}
+Per il processamento streaming è stato utilizzato il framework Apache Flink, con un cluster formato da un job manager ed task manager dotato di un solo task slot, tali valori sono configurabili.
+\begin{adjustbox}{margin=0cm 0cm 0cm 1cm, center}% left, bottom, right, top
+    \includegraphics[width=.5\textwidth]{res/flink_icon.png}
+\end{adjustbox}
+\end{frame}
 
+\begin{frame}{Data Processing-Query 1 (1)}
+    \textbf{Q1:} Per i vault con identificativo compreso tra 1000 e 1020, calcolare il numero di
+    eventi, il valor medio e la deviazione standard della temperatura misurata sui suoi hard disk utilizzando un algoritmo per il calcolo online di tali statistiche. La query va eseguita con finestre di 1 giorno, 3 giorni e globale.
+    \begin{adjustbox}{margin=0cm 0cm 0cm 1cm, center}% left, bottom, right, top
+        \includegraphics[width=1\textwidth]{res/query1_dag.png}
+    \end{adjustbox}
+\end{frame}
+\begin{frame}{Data Processing-Query 1 (2)}
+    \textbf{Calcolo media e deviazione standard:}
+    Per il calcolo online della media e della deviazione standard è stato utilizzato l'algoritmo di Wellford in particolare, tali statistiche sono calcolate nell'aggreagate come:
+    \begin{equation}
+        \begin{aligned}
+            \overline{x}_{k+1} &= \overline{x}_k + \frac{x_{k+1} - \overline{x}_k}{k+1} \\
+            \sigma^2_{k+1} &= \sigma^2_k + \frac{(x_{k+1} - \overline{x}_k)(x_{k+1} - \overline{x}_{k+1})}{k+1}
+        \end{aligned}
+    \end{equation}
+    Come si può vedere in realtà viene calcolata la varianza, successivamente verrà calcolata la deviazione standard come $\sigma = \sqrt{\sigma^2}$
+\end{frame}
+
+\begin{frame}{Data Processing-Query 2}
+    \textbf{Q2:} 
+    Calcolare la classifica aggiornata in tempo reale dei 10 vault che registrano il pi`u alto numero di falli-
+    menti nella stessa giornata. Per ogni vault, riportare il numero di fallimenti ed il modello e numero
+    seriale degli hard disk guasti. La query va eseguita con finestre di 1 giorno, 3 giorni e globale.
+    \begin{adjustbox}{margin=0cm 0cm 0cm 1cm, center}% left, bottom, right, top
+        \includegraphics[width=1\textwidth]{res/query2_dag.png}
+    \end{adjustbox}
+\end{frame}
+
+\begin{frame}{Data Processing-Query 3 (1)}
+    \textbf{Q3:} Calcolare il minimo, 25-esimo, 50-esimo, 75-esimo percentile e massimo delle ore di funzionamento
+    degli hark disk per i vault con identificativo tra 1090 e 1120, senza accumulare i valori per eseguire il calcolo. La query va eseguita con finestre di 1 giorno, 3 giorni e globale.
+    \begin{adjustbox}{margin=0cm 0cm 0cm 1cm, center}% left, bottom, right, top
+        \includegraphics[width=1\textwidth]{res/query3_dag.png}
+    \end{adjustbox}
+\end{frame}
+
+\begin{frame}{Data Processing-Query 3 (2)}
+    \textbf{Calcolo percentili:} 
+    Per il calcolo dei percentili è stato utilizzato il PSquare il quale è un algoritmo che permette di calcolare un approssimazione di tali statistiche senza salvare le osservazioni.\\
+    \vspace{1cm}
+    \textbf{Calcolo minimo e massimo:} 
+    Per quanto riguarda minimo e massimo dato l'aggregatore osserva tutte le tuple si è scelto di non approssimarli ma di effettuarne un calcolo esatto confrontando il valore del campo \textit{s9\_power\_on\_hours} della nuova tupla con il valore attuale presente nell'accumulator dell'aggregatore.
+\end{frame}
 
 \subsection{Data Output}
+\begin{frame}{Data Output}
+Per la scrittura dell'output del processamento è stato utilizzato Apache Kafka, in particolare sono stati creati tre topic, uno per ogni query, in cui vengono scritti i risultati delle stesse. I topic sono stati creati tramite un'apposita API di Kafka e vengono consumati da un'applicazione esterna che si occupa di scrivere i risultati su file in formato CSV.
+\begin{adjustbox}{margin=0cm 0cm 0cm 1cm, center}% left, bottom, right, top
+    \includegraphics[width=0.8\textwidth]{res/output.png}
+\end{adjustbox}
+\end{frame}
 
 
 %---------------------CONCLUSIONI---------------------------
@@ -178,11 +234,6 @@
 
 \setLayout{vertical}
 \subsection{Risultati}
-
-
-
-
-
 
 \subsection{Performance}
 \begin{frame}
@@ -212,7 +263,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{}
     \frametitle{Query1}
     \begin{columns}
         \column{0.5\textwidth}
