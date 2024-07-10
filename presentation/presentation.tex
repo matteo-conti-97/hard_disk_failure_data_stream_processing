@@ -45,7 +45,7 @@
 
 \institute[UFG] % (optional)
 {
-  Progetto 1 - Batch processing
+  Progetto 1 - Stream processing
 }
 \date{2024}
 %-----------------------The next statement creates the title page.
@@ -78,17 +78,17 @@
     Il progetto verte sull'analisi di un dataset contenente dati riguardanti il monitoraggio di dischi rigidi installati all'interno di un cluster di server gestito da un cloud provider, in particolare si vuole: 
     \vspace{0.3cm}
     \begin{itemize}
-        \item Realizzare una pipeline di elaborazione dati
+        \item Simulare l'invio in real time dei dati
+        \item Realizzare una pipeline di elaborazione real time dei dati
         \item Eseguire le query richieste dalla specifica
-        \item Visualizzare i risultati
-        \item Analizzare le performance ottenute con i formati dati CSV e Parquet
+        \item Analizzare le performance ottenute
     \end{itemize}
     \vspace{0.3cm}
-    % \begin{figure}
-    %     \raggedright
-    %     \hspace{2cm}
-    %     %\includegraphics[width=.7\textwidth]{res/intro_icon.png}
-    % \end{figure}
+    \begin{figure}
+        \raggedright
+        \hspace{2cm}
+        \includegraphics[width=.7\textwidth]{res/intro_icon.png}
+    \end{figure}
 \end{frame}
 %---------------------------------------------------------
 
@@ -105,7 +105,7 @@
         \item \textit{s9\_power\_on\_hours}: tempo di accensione del disco rigido in ore
         \item \textit{s194\_temperature\_celsius}: temperatura del disco rigido in gradi Celsius
         \item \textit{vault\_id}: identificativo del gruppo di storage server a cui il disco rigido appartiene
-        \item \textit{failure}: flag che indica se il disco rigido ha subito una failure o meno  
+        \item \textit{failure}: flag che indica se il disco rigido ha subito una failure o meno
     \end{itemize}
 \end{frame}
 %---------------------------------------------------------
@@ -123,18 +123,20 @@
 %---------------------------------------------------------Slide 6
 \setLayout{vertical}
 \begin{frame}{Pipeline}
-    La pipeline di elaborazione dati è stata containerizzata e deployata tramite docker compose ed è composta da 3 componenti:
+    La pipeline di elaborazione dati è stata containerizzata e deployata tramite docker compose ed è composta da tre componenti:
     \begin{itemize}
         \item Data ingestion
         \item Data processing
-        \item Data visualization
+        \item Data output
     \end{itemize}
-    
+    \begin{adjustbox}{margin=0cm 0cm 0cm 0.9cm, center}% left, bottom, right, top
+        \includegraphics[width=.9\textwidth]{res/pipeline.png}
+    \end{adjustbox}
 \end{frame}
 %---------------------------------------------------------
 
 \subsection{Data ingestion}
-\begin{frame}{Pipeline}
+\begin{frame}{Data ingestion}
     \begin{itemize}
         \item \textbf{Replay Accelerato del Dataset}
             \begin{itemize}
