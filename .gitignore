@@ -9,3 +9,12 @@ report/report.synctex.gz
 report/report.out
 report/report.fdb_latexmk
 report/report.fls
+presentation/presentation.aux
+presentation/presentation.log
+presentation/presentation.synctex.gz
+presentation/presentation.fdb_latexmk
+presentation/presentation.fls
+presentation/presentation.out
+presentation/presentation.nav
+presentation/presentation.snm
+presentation/presentation.toc
