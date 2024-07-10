@@ -65,16 +65,40 @@ Inoltre, righe di header ripetute ad esempio righe in cui il campo \textit{vault
 
 \section{Pipeline}
 Per la gestione dei dati relativi ai guasti dei dischi rigidi, è stata implementata una pipeline (Fig. \ref{fig:pipeline}) il cui deploy è stato fatto tramite Docker Compose. La pipeline è composta da diverse componenti, ognuna delle quali svolge un compito specifico, in particolare è stato utilizzato Apache Kafka come sistema publish subscriber per la data ingestion e la scrittura dell'output ed Apache Flink per lo stream processing. Di seguito verrano illustrati i dettagli di ciascuna componente.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./res/pipeline.png}
+    \caption{Pipeline ad alto livello}
+    \label{fig:pipeline}
+\end{figure} 
 
 \subsection{Data Ingestion}
 
 \subsection{Data Stream Processing}
+Per il processamento streaming dei dati, e quindi l'esecuzione delle query, è stato utilizzato il framework Apache Flink, in particolare utilizzando la libreria PyFlink. È stato utilizzato un cluster composto da uno job manager ed un task manager dotato di un task slot (Fig. \ref{fig:flink_cluster}).
+Flink consuma i dati da Kafka, filtrati, processati e successivamente pubblicati nuovamente in un topic Kafka. Per effettuare le query sono state utilizzate le API dei Datastream. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./res/flink_cluster.jpeg}
+    \caption{Cluster Flink}
+    \label{fig:flink_cluster}
+\end{figure} 
 
 \subsubsection{Query 1}
-
+La prima query prevede di calcolare, per i vault (campo \textit{vault\_id}) con identificativo compreso tra 1000 e 1020,  il numero di eventi valutati, il valor medio e la deviazione standard della temperatura misurata sui suoi hard disk (campo s194\_temperature\_celsius). Per prima cosa vengono generate la source ed il sink Kafka e successivamente, tramite una map, dalle tuple in ingresso vengono estratte le colonne di interesse nel caso di righe del dataset valide e vengono generate delle tuple \textit{Invalid CSV line} per le righe del dataset non valide, al passo successivo tali tuple vengono filtrate. Dopo la fase di filtraggio viene definito come vengono generati i watermark e le tuple vengono marchiate con un timestamp basato sul campo \textit{date} convertito in millisecondi, ricevuto il timestamp vengono filtrate le tuple con \textit{vault\_id} compreso tra 1000 e 1020.
+Sulle rimanenti tuple viene fatto keyBy sul campo \textit{vault\_id} considerando finestra di un giorno, tre giorni o globale (chiusa tramite trigger basato sul process time) a seconda della configurazione; le tuple nella finestra vengono aggregate utilizzando una funzione che si occupa di calcolare il numero di eventi valutati, il valor medio e la varianza della temperatura misurata sui suoi hard disk. Infine al risultato viene applicata una map per convertire la varianza in deviazione standard e successivamente viene scritto nel topic Kafka di output relativo alla prima query. Il calcolo avviene tramite una realizzazione di \textit{AggregateFunction} la quale permette di definire un accumulatore i cui campi possono essere aggiornati ad ogni tupla in arrivo, nel nostro caso l'accumulatore è composto da 5 campi cioè la data della prima tupla relativa ad un certo vault id ricevuta, il vault id della tupla corrente, un contatore che aumenta di 1 ad ogni tupla ricevuta, e due campi che si occupano di implementare l'algoritmo di Welford per il calcolo online di media e varianza.
+In particolare per il calcolo di media e varianza sono state utilizzate le seguenti relazioni:
+\begin{equation}
+    \begin{aligned}
+        \overline{x}_{k+1} &= \overline{x}_k + \frac{x_{k+1} - \overline{x}_k}{k+1} \\
+        \sigma^2_{k+1} &= \sigma^2_k + \frac{(x_{k+1} - \overline{x}_k)(x_{k+1} - \overline{x}_{k+1})}{k+1}
+    \end{aligned}
+\end{equation}
 \subsubsection{Query 2}
-
+La seconda query prevede di calcolare la classifica aggiornata in tempo reale dei 10 vault che registrano il più alto numero di fallimenti nella stessa giornata. Per ogni vault va riportato il numero di fallimenti ed il modello e numero seriale degli hard disk guasti. Per prima cosa vengono generate la source ed il sink Kafka e successivamente, tramite una map, dalle tuple in ingresso vengono estratte le colonne di interesse nel caso di righe del dataset valide e vengono generate delle tuple \textit{Invalid CSV line} per le righe del dataset non valide, al passo successivo tali tuple vengono filtrate. Dopo la fase di filtraggio viene definito come vengono generati i watermark e le tuple vengono marchiate con un timestamp basato sul campo \textit{date} convertito in millisecondi, assegnato il timestamp sulle tuple viene fatto keyBy sul campo \textit{vault\_id} considerando finestra di un giorno, tre giorni o globale (chiusa tramite trigger basato sul process time) a seconda della configurazione. Le tuple nella finestra vengono aggregate tramite un \textit{AggregateFunction} che si occupa, tramite accumulatore, di mantenere la data della prima tupla della finestra e, per ogni vault id, calcolare il numero di fallimenti e mantenere una lista contenente il modello ed il numero seriale degli hard disk guasti. All'output dell'aggregazione viene applicata una \textit{ProcessWindowFunction} che si occupa di calcolare la classifica, questo viene fatto ordinando le tuple nella finestra sul campo che riporta il numero di failure e prendendo le prime 10. Infine il risultato viene scritto nel topic Kafka di output relativo alla seconda query.
 \subsubsection{Query 3}
+La terza query prevede di calcolare il minimo, 25-esimo, 50-esimo, 75-esimo percentile e massimo delle ore di funzionamento (campo \textit{s9\_power\_on\_hours}) degli hark disk per i vault con identificativo tra 1090 e
+1120 (compresi) in real time, senza accumulare tutti i valori. Per prima cosa vengono generate la source ed il sink Kafka e successivamente, tramite una map, dalle tuple in ingresso vengono estratte le colonne di interesse nel caso di righe del dataset valide e vengono generate delle tuple \textit{Invalid CSV line} per le righe del dataset non valide, al passo successivo tali tuple vengono filtrate. Dopo la fase di filtraggio viene definito come vengono generati i watermark e le tuple vengono marchiate con un timestamp basato sul campo \textit{date} convertito in millisecondi, ricevuto il timestamp vengono filtrate le tuple con \textit{vault\_id} compreso tra 1090 e 1120. Sulle rimanenti tuple viene fatto keyBy sul campo \textit{vault\_id} considerando finestra di un giorno, tre giorni o globale (chiusa tramite trigger basato sul process time) a seconda della configurazione; Le tuple nella finestra vengono aggregate tramite un \textit{AggregateFunction} che si occupa, tramite accumulatore, di mantenere la data della prima tupla della finestra e, per ogni vault id, calcolare il minimo, 25-esimo, 50-esimo, 75-esimo percentile e massimo delle ore di funzionamento tramite l'algoritmo \textit{PSquare}\cite{b1}. In particolare ad ogni tupla ricevuta vengono aggiornati gli accumulatori relativi ad i valori del PSquare e vengono confrontati i valori di \textit{s9\_power\_on\_hours} con i valori di min e max precedenti ed aggiornarli se necessario, in questo modo i percentili sono stimati ma mentre il minimo ed il massimo sono esatti pur non mantenendo tutti i valori. Infine il risultato viene scritto nel topic Kafka di output relativo alla terza query.
 
 \subsection{Data Output}
 
@@ -94,8 +118,8 @@ Risorse Docker
 \end{minted}
 Risorse Flink
 \begin{minted}[autogobble, fontsize=\scriptsize, frame=lines]{text}
-    Task Managers: 
-    Task Slots: 
+    Task Managers: 1
+    Task Slots: 1
 \end{minted}
 \subsubsection{Risultati}
 
@@ -103,6 +127,9 @@ Risorse Flink
 \begin{itemize}
     \item \href{https://github.com/matteo-conti-97/hard_disk_failure_data_stream_processing}{Codice sorgente github}
 \end{itemize}
+\begin{thebibliography}{00}
+    \bibitem{b1} R. Jain, I. Chlamtac. \href{https://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf}{"The $P^2$ Algorithm for Dynamic Calculation of Quantiles and Histograms Without Storing Observations."}.
+\end{thebibliography}
 \vspace{12pt}
 \end{document}
 
