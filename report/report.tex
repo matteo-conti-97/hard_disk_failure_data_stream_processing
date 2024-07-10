@@ -114,7 +114,7 @@ Le metriche misurate per le 3 query sono la latenza ed il throughput.
 \end{itemize}
 Entrambe queste metriche sono disponibili tramite l'interfaccia web di Flink e sono accessibili tramite REST API. Le suddette metriche sono state campionate ad intervalli regolari di 1 secondo tramite uno script Python che fa richieste al job manager utilizzando le REST API di Flink e salva i risultati in un file CSV per poi graficarli.
 \subsubsection{Query 1}
-Si può notare che per la prima query i risultati per tutte le finestre sono abbastanza in linea tra loro per quanto rigaurda il throughput. Invece per quanto riguarda la latenza essa va 
+Si può notare che per la prima query i risultati per tutte le finestre sono abbastanza in linea tra loro per quanto rigaurda il throughput. Invece per quanto riguarda la latenza essa va a comparire sempre più tardi mano a mano che la finestra aumenta, questo probabilmente è dovuto al fatto che nelle finestre più piccole ci sono più parti in cui il sistema deve mandare l'output sul topic di uscita e quindi rallenta l'inizio dell'elaborazione successiva portando ad un aumento della latenza. Inoltre si può notare che l'andamento del throughput è essenzialmente costante.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./res/q1_w1_latency.png}
@@ -152,7 +152,7 @@ Si può notare che per la prima query i risultati per tutte le finestre sono abb
     \label{fig:query1_throughput_w3}
 \end{figure}
 \subsubsection{Query 2}
-
+Anche per la query 2 valgono le stesse considerazioni della query1.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./res/q2_w1_latency.png}
@@ -190,7 +190,7 @@ Si può notare che per la prima query i risultati per tutte le finestre sono abb
     \label{fig:query2_throughput_w3}
 \end{figure}
 \subsubsection{Query 3}
-
+Anche per la query 3 valgono le stesse considerazioni della query1.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./res/q3_w1_latency.png}
