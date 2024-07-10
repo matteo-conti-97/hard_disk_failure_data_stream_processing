@@ -126,7 +126,7 @@
     La pipeline di elaborazione dati è stata containerizzata e deployata tramite docker compose ed è composta da tre componenti:
     \begin{itemize}
         \item Data ingestion
-        \item Data processing
+        \item Data stream processing
         \item Data output
     \end{itemize}
     \begin{adjustbox}{margin=0cm 0cm 0cm 0.9cm, center}% left, bottom, right, top
@@ -162,7 +162,7 @@
     \end{itemize}
 \end{frame}
 
-\section{Data processing}
+\section{Data stream processing}
 
 \setLayout{mainpoint}
 \setBGColor{TorVergataGreen}
@@ -171,7 +171,7 @@
 \end{frame}
 \setLayout{vertical}
 
-\begin{frame}{Data processing}
+\begin{frame}{Data stream processing}
 Per il processamento streaming è stato utilizzato il framework Apache Flink, con un cluster formato da un job manager ed task manager dotato di un solo task slot, tali valori sono configurabili.
 \begin{adjustbox}{margin=0cm 0cm 0cm 1cm, center}% left, bottom, right, top
     \includegraphics[width=.5\textwidth]{res/flink_icon.png}
@@ -187,11 +187,11 @@ Per il processamento streaming è stato utilizzato il framework Apache Flink, co
 \end{frame}
 \begin{frame}{Data Processing-Query 1 (2)}
     \textbf{Calcolo media e deviazione standard:}
-    Per il calcolo online della media e della deviazione standard è stato utilizzato l'algoritmo di Wellford in particolare, tali statistiche sono calcolate nell'aggreagate come:
+    Per il calcolo online della media e della deviazione standard è stato utilizzato l'algoritmo di Welford in particolare, tali statistiche sono calcolate nell'aggreagate come:
     \begin{equation}
         \begin{aligned}
             \overline{x}_{k+1} &= \overline{x}_k + \frac{x_{k+1} - \overline{x}_k}{k+1} \\
-            \sigma^2_{k+1} &= \sigma^2_k + \frac{(x_{k+1} - \overline{x}_k)(x_{k+1} - \overline{x}_{k+1})}{k+1}
+            \sigma^2_{k+1} &= \sigma^2_k + \frac{(x_{k+1} - \overline{x}_k)(x_{k+1} - \overline{x}_{k+1})-\sigma^2_k}{k+1}
         \end{aligned}
     \end{equation}
     Come si può vedere in realtà viene calcolata la varianza, successivamente verrà calcolata la deviazione standard come $\sigma = \sqrt{\sigma^2}$
