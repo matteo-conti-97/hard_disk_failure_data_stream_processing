@@ -105,7 +105,8 @@
         \item \textit{s9\_power\_on\_hours}: tempo di accensione del disco rigido in ore
         \item \textit{s194\_temperature\_celsius}: temperatura del disco rigido in gradi Celsius
         \item \textit{vault\_id}: identificativo del gruppo di storage server a cui il disco rigido appartiene
-        \item \textit{failure}: flag che indica se il disco rigido ha subito una failure o meno
+        \item \textit{failure}: flag che indica se il disco rigido ha subito una failure o meno  
+        \item \textit{s194\_temperature\_celsius}: temperatura del disco rigido in gradi celsius
     \end{itemize}
 \end{frame}
 %---------------------------------------------------------
@@ -123,12 +124,10 @@
 %---------------------------------------------------------Slide 6
 \setLayout{vertical}
 \begin{frame}{Pipeline}
-    La pipeline di elaborazione dati è stata containerizzata e deployata tramite docker compose ed è composta da cinque componenti:
+    La pipeline di elaborazione dati è stata containerizzata e deployata tramite docker compose ed è composta da 3 componenti:
     \begin{itemize}
         \item Data ingestion
-        \item Data storage
         \item Data processing
-        \item Analytical data storage
         \item Data visualization
     \end{itemize}
     
